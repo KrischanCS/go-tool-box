@@ -8,7 +8,10 @@ import (
 	"github.com/KrischanCS/go-tool-box/set"
 )
 
+//nolint:funlen
 func TestIntersection(t *testing.T) {
+	t.Parallel()
+
 	// Arrange
 
 	type test struct {
@@ -77,6 +80,7 @@ func TestIntersection(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestIntersectionOf(t *testing.T) {
 	// Arrange
 

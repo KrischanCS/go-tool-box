@@ -5,8 +5,10 @@ package set
 func (s *Set[T]) Intersection(others ...*Set[T]) {
 	for v := range s.m {
 		for _, other := range others {
+
 			if !other.Contains(v) {
 				s.Remove(v)
+
 				break
 			}
 		}
