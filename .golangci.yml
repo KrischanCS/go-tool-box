@@ -1,0 +1,47 @@
+version: "2"
+linters:
+  default: all
+  disable:
+    - depguard
+    - exhaustruct
+    - ireturn
+    - testpackage
+    - tparallel
+    - wrapcheck
+    - nonamedreturns
+  settings:
+    dupl:
+      threshold: 150
+
+    exhaustive:
+      check:
+        - switch
+        - map
+      default-signifies-exhaustive: true
+
+    gocognit:
+      min-complexity: 10
+
+    paralleltest:
+      ignore-missing-subtests: true
+
+    staticcheck:
+      checks:
+        - all
+
+    testifylint:
+      disable:
+        - require-error
+
+    varnamelen:
+      max-distance: 15
+      ignore-names:
+        - i
+        - w
+        - ok
+        - tc # TestCase
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

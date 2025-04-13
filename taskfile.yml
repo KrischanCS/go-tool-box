@@ -1,0 +1,35 @@
+version: '3'
+
+shopt: [ -s globstar ]
+
+tasks:
+  test:
+    cmds:
+      - go test ./...
+    sources:
+      - ./**/*.go
+      - taskfile.yml
+      - .golangci.yml
+
+  check:
+    cmds:
+      - go tool goimports -l -w .
+      - go tool govulncheck ./...
+      - go tool golangci-lint run --output.tab.path stdout --output.tab.print-linter-name --output.tab.colors
+      - task test
+    sources:
+      - ./**/*.go
+      - taskfile.yml
+      - .golangci.yml
+
+  deps:
+    cmds:
+      - go get -u ./...
+      - go mod tidy
+      - go mod vendor
+    sources:
+      - ./**/*.go
+      - go.mod
+      - go.sum
+      - taskfile.yml
+      - .golangci.yml
