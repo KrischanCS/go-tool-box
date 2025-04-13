@@ -77,7 +77,7 @@ func TestSet_Unique(t *testing.T) {
 }
 
 //nolint:funlen
-func TestSet_UniqueOf(t *testing.T) {
+func TestUniqueOf(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
