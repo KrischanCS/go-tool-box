@@ -82,6 +82,8 @@ func TestIntersection(t *testing.T) {
 
 //nolint:funlen
 func TestIntersectionOf(t *testing.T) {
+	t.Parallel()
+
 	// Arrange
 
 	type test struct {

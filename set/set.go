@@ -119,6 +119,7 @@ func (s *Set[T]) String() string {
 	return sb.String()
 }
 
+// Clone creates a shallow copy of the set.
 func (s *Set[T]) Clone() *Set[T] {
 	return New[T](s.Values()...)
 }
