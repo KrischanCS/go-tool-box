@@ -1,0 +1,109 @@
+package set_test
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-tool-box/set"
+)
+
+// point is a simple struct as example for testing.
+type point struct {
+	X int
+	Y int
+}
+
+func TestNew_empty(t *testing.T) {
+	t.Parallel()
+
+	// Act
+	s := set.New[string]()
+
+	// Assert
+	assert.True(t, s.IsEmpty())
+}
+
+func TestNew_withValues(t *testing.T) {
+	t.Parallel()
+
+	// Act
+	s := set.New[string]("a", "b", "c")
+
+	// Assert
+	assert.False(t, s.IsEmpty())
+	assert.Equal(t, 3, s.Len())
+	assert.True(t, s.Contains("a"))
+	assert.True(t, s.Contains("b"))
+	assert.True(t, s.Contains("c"))
+}
+
+func TestNew_withDuplicateValues(t *testing.T) {
+	t.Parallel()
+
+	// Act
+	s := set.New[string]("a", "b", "c", "a")
+
+	// Assert
+	assert.False(t, s.IsEmpty())
+	assert.Equal(t, 3, s.Len())
+	assert.True(t, s.Contains("a"))
+	assert.True(t, s.Contains("b"))
+	assert.True(t, s.Contains("c"))
+}
+
+func TestSet_String(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	type testCase struct {
+		name  string
+		input []string
+		want  string
+	}
+
+	tests := []testCase{
+		{
+			name:  "Empty",
+			input: []string{},
+			want:  "(Set[string]: <empty>)",
+		},
+		{
+			name:  "Single value",
+			input: []string{"a"},
+			want:  "(Set[string]: 'a')",
+		},
+		{
+			name:  "Multiple values",
+			input: []string{"1", "2", "3", "4", "5"},
+			want:  "(Set[string]: '1' '2' '3' '4' '5')",
+		},
+		{
+			name:  "Should escape ' (single quote)",
+			input: []string{"Value with 'single quote'", "Value with \"double quote\""},
+			want:  "(Set[string]: 'Value with \"double quote\"' 'Value with \\'single quote\\'')",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			s := set.New(tc.input...)
+
+			// Assert
+			assert.Equal(t, tc.want, s.String())
+		})
+	}
+}
+
+func TestSet_Clear(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := set.New[string]("a", "b", "c")
+
+	// Act
+	s.Clear()
+
+	assert.Equal(t, 0, s.Len())
+}
