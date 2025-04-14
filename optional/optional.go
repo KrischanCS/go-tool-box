@@ -1,7 +1,7 @@
 // Package optional provides a generic Optional type for Go.
 //
 // For a lot of use cases, I don't like mixing the concepts of referencing and
-// optionality, as it happens with pointers.
+// optionality, as it happens with pointers, so this provides an alternative.
 //
 // The Optionals implemented in this package handle marshalling and unmarshalling
 // to/from json and xml and are handling null-values, not existing values and
