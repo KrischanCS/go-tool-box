@@ -12,7 +12,7 @@ func TestSet_Contains_Add(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	s := set.New(1.0, 2.1, 3.2)
+	s := set.Of(1.0, 2.1, 3.2)
 
 	// Act
 	s.Add(4.31)
@@ -30,7 +30,7 @@ func TestSet_Contains_Remove(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	s := set.New(1, 2, 3)
+	s := set.Of(1, 2, 3)
 
 	// Act
 	contained2 := s.Remove(2)
@@ -107,7 +107,7 @@ func TestSet_Contains_multipleValues(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			s := set.New(tc.input...)
+			s := set.Of(tc.input...)
 
 			// Act
 			got := s.Contains(tc.check...)
@@ -159,7 +159,7 @@ func Test_Set_Contains_Exactly(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
-			s := set.New(tc.input...)
+			s := set.Of(tc.input...)
 			got := s.ContainsExactly(tc.check...)
 
 			// Assert

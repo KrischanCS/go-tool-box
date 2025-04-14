@@ -18,7 +18,7 @@ func FuzzSet(f *testing.F) {
 	f.Add(true, 43217894231)
 	f.Add(false, -123456789)
 
-	s := set.New[int]()
+	s := set.Of[int]()
 
 	f.Fuzz(func(t *testing.T, add bool, value int) {
 		l := s.Len()

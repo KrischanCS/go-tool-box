@@ -14,21 +14,21 @@ type point struct {
 	Y int
 }
 
-func TestNew_empty(t *testing.T) {
+func TestOf_empty(t *testing.T) {
 	t.Parallel()
 
 	// Act
-	s := set.New[string]()
+	s := set.Of[string]()
 
 	// Assert
 	assert.True(t, s.IsEmpty())
 }
 
-func TestNew_withValues(t *testing.T) {
+func TestOf_withValues(t *testing.T) {
 	t.Parallel()
 
 	// Act
-	s := set.New[string]("a", "b", "c")
+	s := set.Of[string]("a", "b", "c")
 
 	// Assert
 	assert.False(t, s.IsEmpty())
@@ -38,11 +38,11 @@ func TestNew_withValues(t *testing.T) {
 	assert.True(t, s.Contains("c"))
 }
 
-func TestNew_withDuplicateValues(t *testing.T) {
+func TestOf_withDuplicateValues(t *testing.T) {
 	t.Parallel()
 
 	// Act
-	s := set.New[string]("a", "b", "c", "a")
+	s := set.Of[string]("a", "b", "c", "a")
 
 	// Assert
 	assert.False(t, s.IsEmpty())
@@ -83,7 +83,7 @@ func TestSet_String(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
-			s := set.New(tc.input...)
+			s := set.Of(tc.input...)
 
 			// Assert
 			assert.Equal(t, tc.want, s.String())
@@ -95,7 +95,7 @@ func TestSet_Clear(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	s := set.New[string]("a", "b", "c")
+	s := set.Of[string]("a", "b", "c")
 
 	// Act
 	s.Clear()

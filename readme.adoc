@@ -8,7 +8,7 @@ Most of the packages are rather small.
 If you consider using any of them, maybe you should just use this module to look up how it's implemented instead of adding a dependency to your project.
 Remember:
 
-[quote,Rob Pike,https:go-proverbs.github.io]
+[quote,Rob Pike in his 'Go Proverbs' talk,https:go-proverbs.github.io]
 --
 A little copying is better than a little dependency.
 --

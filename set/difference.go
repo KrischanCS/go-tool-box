@@ -15,7 +15,7 @@ func (s *Set[T]) Difference(others ...*Set[T]) {
 func DifferenceOf[T comparable](sets ...*Set[T]) *Set[T] {
 	switch len(sets) {
 	case 0:
-		return New[T]()
+		return Of[T]()
 	case 1:
 		return sets[0].Clone()
 	}

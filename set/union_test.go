@@ -23,34 +23,34 @@ func TestUnion(t *testing.T) {
 	tests := []test{
 		{
 			name:      "Should return empty set if all sets are empty",
-			set:       set.New[any](),
-			otherSets: []*set.Set[any]{set.New[any](), set.New[any]()},
+			set:       set.Of[any](),
+			otherSets: []*set.Set[any]{set.Of[any](), set.Of[any]()},
 			want:      []any{},
 		},
 		{
 			name:      "Should not modify set wif no sets are added",
-			set:       set.New[any]("a", "b", "c"),
+			set:       set.Of[any]("a", "b", "c"),
 			otherSets: []*set.Set[any]{},
 			want:      []any{"a", "b", "c"},
 		},
 		{
 			name:      "Should add values from other sets to set",
-			set:       set.New[any](1, 2, 3),
-			otherSets: []*set.Set[any]{set.New[any](4, 5, 6)},
+			set:       set.Of[any](1, 2, 3),
+			otherSets: []*set.Set[any]{set.Of[any](4, 5, 6)},
 			want:      []any{1, 2, 3, 4, 5, 6},
 		},
 		{
 			name:      "Should add values from multiple other sets to set",
-			set:       set.New[any](6.283185, 2.718, 9.81),
-			otherSets: []*set.Set[any]{set.New[any](1.6605, 1.618), set.New[any](1.38, 1.602)},
+			set:       set.Of[any](6.283185, 2.718, 9.81),
+			otherSets: []*set.Set[any]{set.Of[any](1.6605, 1.618), set.Of[any](1.38, 1.602)},
 			want:      []any{6.283185, 2.718, 9.81, 1.6605, 1.618, 1.38, 1.602},
 		},
 		{
 			name: "Should add values from multiple other sets to set without adding duplicates",
-			set:  set.New[any](point{1, 2}, point{3, 4}),
+			set:  set.Of[any](point{1, 2}, point{3, 4}),
 			otherSets: []*set.Set[any]{
-				set.New[any](point{5, 6}, point{1, 2}),
-				set.New[any](point{3, 4}, point{7, 8}),
+				set.Of[any](point{5, 6}, point{1, 2}),
+				set.Of[any](point{3, 4}, point{7, 8}),
 			},
 			want: []any{point{1, 2}, point{3, 4}, point{7, 8}, point{5, 6}},
 		},
@@ -84,7 +84,7 @@ func TestUnionOf(t *testing.T) {
 	tests := []test{
 		{
 			name: "Should create an empty set if all given sets are empty",
-			sets: []*set.Set[any]{set.New[any](), set.New[any]()},
+			sets: []*set.Set[any]{set.Of[any](), set.Of[any]()},
 			want: []any{},
 		},
 		{
@@ -94,29 +94,29 @@ func TestUnionOf(t *testing.T) {
 		},
 		{
 			name: "Should create a copy of a set if only one set is given",
-			sets: []*set.Set[any]{set.New[any](4, 5, 6)},
+			sets: []*set.Set[any]{set.Of[any](4, 5, 6)},
 			want: []any{4, 5, 6},
 		},
 		{
 			name: "Should create a set with values of given sets",
-			sets: []*set.Set[any]{set.New[any](1, 2, 3), set.New[any](4, 5, 6)},
+			sets: []*set.Set[any]{set.Of[any](1, 2, 3), set.Of[any](4, 5, 6)},
 			want: []any{1, 2, 3, 4, 5, 6},
 		},
 		{
 			name: "Should create a set with values from multiple other sets",
 			sets: []*set.Set[any]{
-				set.New[any](6.283185, 2.718, 9.81),
-				set.New[any](1.6605, 1.618),
-				set.New[any](1.38, 1.602),
+				set.Of[any](6.283185, 2.718, 9.81),
+				set.Of[any](1.6605, 1.618),
+				set.Of[any](1.38, 1.602),
 			},
 			want: []any{6.283185, 2.718, 9.81, 1.6605, 1.618, 1.38, 1.602},
 		},
 		{
 			name: "Should create a set with values from multiple other sets without adding duplicates",
 			sets: []*set.Set[any]{
-				set.New[any](point{1, 2}, point{3, 4}),
-				set.New[any](point{5, 6}, point{1, 2}),
-				set.New[any](point{3, 4}, point{7, 8}),
+				set.Of[any](point{1, 2}, point{3, 4}),
+				set.Of[any](point{5, 6}, point{1, 2}),
+				set.Of[any](point{3, 4}, point{7, 8}),
 			},
 			want: []any{point{1, 2}, point{3, 4}, point{7, 8}, point{5, 6}},
 		},
@@ -137,8 +137,8 @@ func TestUnionOf_modify(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	set1 := set.New[any](1, 2, 3)
-	set2 := set.New[any](4, 5, 6)
+	set1 := set.Of[any](1, 2, 3)
+	set2 := set.Of[any](4, 5, 6)
 
 	// Act
 	union := set.UnionOf(set1, set2)

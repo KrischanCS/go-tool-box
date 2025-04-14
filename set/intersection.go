@@ -4,12 +4,8 @@ package set
 // other given sets.
 func (s *Set[T]) Intersection(others ...*Set[T]) {
 	for v := range s.m {
-		for _, other := range others {
-			if !other.Contains(v) {
-				s.Remove(v)
-
-				break
-			}
+		if !allContains(others, v) {
+			s.Remove(v)
 		}
 	}
 }
@@ -19,7 +15,7 @@ func (s *Set[T]) Intersection(others ...*Set[T]) {
 func IntersectionOf[T comparable](sets ...*Set[T]) *Set[T] {
 	switch len(sets) {
 	case 0:
-		return New[T]()
+		return Of[T]()
 	case 1:
 		return sets[0].Clone()
 	}
@@ -34,6 +30,16 @@ func IntersectionOf[T comparable](sets ...*Set[T]) *Set[T] {
 	s.Intersection(sets[1:]...)
 
 	return s
+}
+
+func allContains[T comparable](others []*Set[T], v T) bool {
+	for _, other := range others {
+		if !other.Contains(v) {
+			return false
+		}
+	}
+
+	return true
 }
 
 func swapShortestFirst[T comparable](sets []*Set[T]) {

@@ -24,8 +24,8 @@ type Set[T comparable] struct {
 	m map[T]struct{}
 }
 
-// New creates a new set with the given values.
-func New[T comparable](values ...T) *Set[T] {
+// Of creates a new set with the given values.
+func Of[T comparable](values ...T) *Set[T] {
 	s := Set[T]{m: make(map[T]struct{}, len(values))}
 
 	for _, v := range values {
@@ -33,6 +33,11 @@ func New[T comparable](values ...T) *Set[T] {
 	}
 
 	return &s
+}
+
+// WithCapacity creates a Set with the given capacity.
+func WithCapacity[T comparable](capacity int) *Set[T] {
+	return &Set[T]{m: make(map[T]struct{}, capacity)}
 }
 
 // Add adds the given value to the set if it is not already present.
@@ -119,5 +124,5 @@ func (s *Set[T]) String() string {
 
 // Clone creates a shallow copy of the set.
 func (s *Set[T]) Clone() *Set[T] {
-	return New[T](s.Values()...)
+	return Of[T](s.Values()...)
 }

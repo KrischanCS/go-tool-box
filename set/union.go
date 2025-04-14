@@ -12,7 +12,7 @@ func (s *Set[T]) Union(sets ...*Set[T]) {
 // UnionOf creates a new set that contains all values from the given sets.
 func UnionOf[T comparable](sets ...*Set[T]) *Set[T] {
 	if len(sets) == 0 {
-		return New[T]()
+		return Of[T]()
 	}
 
 	s := sets[0].Clone()

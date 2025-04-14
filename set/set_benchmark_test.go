@@ -21,7 +21,7 @@ func BenchmarkNew(b *testing.B) {
 
 	var s *Set[int]
 	for b.Loop() {
-		s = New[int](ints...)
+		s = Of[int](ints...)
 	}
 
 	assert.Equal(b, numDifferentValues, s.Len())
@@ -42,7 +42,7 @@ func BenchmarkAdd(b *testing.B) {
 
 	var s *Set[int]
 	for b.Loop() {
-		s = New[int]()
+		s = Of[int]()
 
 		for _, v := range values {
 			s.Add(v)

@@ -12,19 +12,19 @@ func BenchmarkIntersectionOf(b *testing.B) {
 	rand := rand.New(rand.NewSource(0))
 
 	sets := []*set.Set[string]{
-		set.New("a", "b", "c"),
-		set.New("d", "e", "f"),
-		set.New("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+		set.Of("a", "b", "c"),
+		set.Of("d", "e", "f"),
+		set.Of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
 			"n", "o", "p", "q", "rand", "s", "t", "u", "v", "w", "x", "y", "z"),
-		set.New("d", "e", "f", "g", "h"),
-		set.New("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o"),
-		set.New("p", "q"),
-		set.New("rand", "s", "t", "u", "v", "w"),
-		set.New("x", "y", "z", "a", "b", "c", "d"),
-		set.New("m", "n", "o", "p", "q", "rand", "s", "t"),
-		set.New("e", "f", "g"),
-		set.New("h", "i", "j", "k", "l", "m", "n"),
-		set.New("y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i")}
+		set.Of("d", "e", "f", "g", "h"),
+		set.Of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o"),
+		set.Of("p", "q"),
+		set.Of("rand", "s", "t", "u", "v", "w"),
+		set.Of("x", "y", "z", "a", "b", "c", "d"),
+		set.Of("m", "n", "o", "p", "q", "rand", "s", "t"),
+		set.Of("e", "f", "g"),
+		set.Of("h", "i", "j", "k", "l", "m", "n"),
+		set.Of("y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i")}
 
 	chosenSets := make([]*set.Set[string], 0, 5)
 	for b.Loop() {
