@@ -89,7 +89,7 @@ func (s *Set[T]) IsEmpty() bool {
 }
 
 // String returns a string representation in the format:
-//   - If Present: "(Set[{{type}}]: '{{value 1}}' '{{value 2}} ...')"
+//   - If Present: "(Set[{{type}}]: [{{value 1}} {{value 2}} ...])"
 //   - If Empty: "(Set[{{type}}]: <empty>)"
 //
 // The values are sorted by their string representation for easier overview,
@@ -101,18 +101,16 @@ func (s *Set[T]) String() string {
 
 	values := make([]string, 0, len(s.m))
 	for v := range s.m {
-		values = append(values, strings.ReplaceAll(fmt.Sprintf("%v", v), "'", `\'`))
+		values = append(values, fmt.Sprintf("%v", v))
 	}
 
 	sort.Strings(values)
 
 	var sb strings.Builder
 
-	sb.WriteString(fmt.Sprintf("(Set[%T]:", *new(T)))
+	sb.WriteString(fmt.Sprintf("(Set[%T]: ", *new(T)))
 
-	for _, v := range values {
-		sb.WriteString(fmt.Sprintf(" '%s'", v))
-	}
+	sb.WriteString(fmt.Sprintf("%s", values))
 
 	sb.WriteString(")")
 

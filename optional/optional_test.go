@@ -134,20 +134,20 @@ func TestOptional_String(t *testing.T) {
 		value  any
 		string string
 	}{
-		{"test", `(Optional[string]: 'test')`},
-		{1, `(Optional[int]: '1')`},
-		{1.23, `(Optional[float64]: '1.23')`},
-		{true, `(Optional[bool]: 'true')`},
+		{"test", `(Optional[string]: test)`},
+		{1, `(Optional[int]: 1)`},
+		{1.23, `(Optional[float64]: 1.23)`},
+		{true, `(Optional[bool]: true)`},
 		{
 			value:  must.Value(time.Parse(time.DateTime, "2025-04-12 01:02:03")),
-			string: "(Optional[time.Time]: '2025-04-12 01:02:03 +0000 UTC')"},
+			string: "(Optional[time.Time]: 2025-04-12 01:02:03 +0000 UTC)"},
 		{
 			value:  state{"France", "Paris"},
-			string: "(Optional[optional_test.state]: '{France Paris}')",
+			string: "(Optional[optional_test.state]: {France Paris})",
 		},
 		{
 			value:  stateStringer{"France", "Paris"},
-			string: "(Optional[optional_test.stateStringer]: '[France - Capital: Paris]')",
+			string: "(Optional[optional_test.stateStringer]: [France - Capital: Paris])",
 		},
 	}
 

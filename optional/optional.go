@@ -44,12 +44,12 @@ func (o *Optional[T]) Clear() {
 }
 
 // String returns a string representation in the format:
-//   - If Present: "Optional[{{type}}]: '{{value}}'"
+//   - If Present: "Optional[{{type}}]: {{value}}"
 //   - If Empty: "Optional[{{type}}]: <empty>"
 func (o Optional[T]) String() string {
 	if !o.present {
 		return fmt.Sprintf("(Optional[%T]: <empty>)", o.value)
 	}
 
-	return fmt.Sprintf("(Optional[%T]: '%v')", o.value, o.value)
+	return fmt.Sprintf("(Optional[%T]: %v)", o.value, o.value)
 }

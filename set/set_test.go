@@ -71,17 +71,12 @@ func TestSet_String(t *testing.T) {
 		{
 			name:  "Single value",
 			input: []string{"a"},
-			want:  "(Set[string]: 'a')",
+			want:  "(Set[string]: [a])",
 		},
 		{
 			name:  "Multiple values",
 			input: []string{"1", "2", "3", "4", "5"},
-			want:  "(Set[string]: '1' '2' '3' '4' '5')",
-		},
-		{
-			name:  "Should escape ' (single quote)",
-			input: []string{"Value with 'single quote'", "Value with \"double quote\""},
-			want:  "(Set[string]: 'Value with \"double quote\"' 'Value with \\'single quote\\'')",
+			want:  "(Set[string]: [1 2 3 4 5])",
 		},
 	}
 
