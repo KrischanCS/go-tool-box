@@ -1,0 +1,59 @@
+== Go Tool Box
+
+This is a collection of packages, implementing various functionalities I tend to implement in multiple of my projects.
+
+Not all of them are idiomatic to Go, and not recommended for production code, but I find them useful for playground projects or tests.
+
+Most of the packages are rather small.
+If you consider using any of them, maybe you should just use this module to look up how it's implemented instead of adding a dependency to your project.
+Remember:
+
+[quote,Rob Pike,https:go-proverbs.github.io]
+--
+A little copying is better than a little dependency.
+--
+
+=== Packages
+
+Currently, the tool box contains the following packages, more may follow.
+
+If some of them turns out specifically useful, they may be moved to their own modules.
+
+==== Set
+
+Set provides an implementation of a set, meaning a collection of unique, unordered values.
+
+It implements basic collection options as add, remove, contains, len and clear as well as common set operations like union, intersection and difference.
+
+==== Must
+
+Must provides functions which panics on error and returns the value(s) passed to them.
+
+This is usually not recommended, but can be helpful in tests or initialization of an application.
+
+It can be used like regex.MustCompile or template.MustParse but for arbitrary functions (With two or three return parameters).
+
+==== Result
+
+Result a type wrapping either a value or an error.
+It is inspired by usts result type, but tries to remain as idiomatic to go as possible
+
+Main use case is to send it over channels, when possible errors should be propagated to the receiver.
+
+Apart from that, after calling `Get()`, it can be used with go's idiomatic error handling, like:
+
+[source,go]
+--
+value, err := result.Get()
+if err != nil {
+  handle error
+}
+--
+
+==== Optional
+
+Package optional provides a generic Optional type for Go.
+
+For a lot of use cases, I don't like mixing the concepts of referencing and optionality, as it happens with pointers.
+
+The Optionals implemented in this package handle marshalling and unmarshalling to/from json and xml and are handling null-values, not existing values and omitzero/omitempty.
