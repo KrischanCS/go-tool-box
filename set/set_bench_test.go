@@ -19,7 +19,7 @@ func BenchmarkNew(b *testing.B) {
 		ints[i] = i % numDifferentValues
 	}
 
-	var s *Set[int]
+	var s Set[int]
 	for b.Loop() {
 		s = Of[int](ints...)
 	}
@@ -40,7 +40,7 @@ func BenchmarkAdd(b *testing.B) {
 		values[i] = i % numDifferentValues
 	}
 
-	var s *Set[int]
+	var s Set[int]
 	for b.Loop() {
 		s = Of[int]()
 

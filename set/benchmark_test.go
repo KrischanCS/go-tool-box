@@ -8,7 +8,7 @@ import (
 )
 
 //nolint:gochecknoglobals
-var operationBenchmarkSets = []*set.Set[string]{
+var operationBenchmarkSets = []set.Set[string]{
 	set.Of("a", "b", "c"),
 	set.Of("d", "e", "f"),
 	set.Of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
@@ -24,24 +24,24 @@ var operationBenchmarkSets = []*set.Set[string]{
 	set.Of("y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i")}
 
 func BenchmarkSet_Union(b *testing.B) {
-	benchOp(b, func(sets []*set.Set[string]) {
+	benchOp(b, func(sets []set.Set[string]) {
 		sets[0].Union(sets[1:]...)
 	})
 }
 
 func BenchmarkSet_Intersection(b *testing.B) {
-	benchOp(b, func(sets []*set.Set[string]) {
+	benchOp(b, func(sets []set.Set[string]) {
 		sets[0].Intersection(sets[1:]...)
 	})
 }
 
 func BenchmarkSet_Difference(b *testing.B) {
-	benchOp(b, func(sets []*set.Set[string]) {
+	benchOp(b, func(sets []set.Set[string]) {
 		sets[0].Difference(sets[1:]...)
 	})
 }
 func BenchmarkSet_Unique(b *testing.B) {
-	benchOp(b, func(sets []*set.Set[string]) {
+	benchOp(b, func(sets []set.Set[string]) {
 		sets[0].Unique(sets[1:]...)
 	})
 }
@@ -62,14 +62,14 @@ func BenchmarkUniqueOf(b *testing.B) {
 	benchOpOf(b, set.UniqueOf)
 }
 
-func benchOp(b *testing.B, fn func(sets []*set.Set[string])) {
+func benchOp(b *testing.B, fn func(sets []set.Set[string])) {
 	b.Helper()
 	b.ReportAllocs()
 
 	//nolint:gosec
 	rand := rand.New(rand.NewSource(0))
 
-	chosenSets := make([]*set.Set[string], 0, 5)
+	chosenSets := make([]set.Set[string], 0, 5)
 	for b.Loop() {
 		chosenSets = chosenSets[:0]
 
@@ -83,14 +83,14 @@ func benchOp(b *testing.B, fn func(sets []*set.Set[string])) {
 	}
 }
 
-func benchOpOf(b *testing.B, fn func(sets ...*set.Set[string]) *set.Set[string]) {
+func benchOpOf(b *testing.B, fn func(sets ...set.Set[string]) set.Set[string]) {
 	b.Helper()
 	b.ReportAllocs()
 
 	//nolint:gosec
 	rand := rand.New(rand.NewSource(0))
 
-	chosenSets := make([]*set.Set[string], 0, 5)
+	chosenSets := make([]set.Set[string], 0, 5)
 	for b.Loop() {
 		chosenSets = chosenSets[:0]
 

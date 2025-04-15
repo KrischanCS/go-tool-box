@@ -32,7 +32,7 @@ func FuzzSet(f *testing.F) {
 	})
 }
 
-func addAndCheck(t *testing.T, s *set.Set[int], value int, l int) {
+func addAndCheck(t *testing.T, s set.Set[int], value int, l int) {
 	t.Helper()
 
 	contained := s.Contains(value)
@@ -47,7 +47,7 @@ func addAndCheck(t *testing.T, s *set.Set[int], value int, l int) {
 	}
 }
 
-func RemoveAndCheck(t *testing.T, s *set.Set[int], value int, l int) {
+func RemoveAndCheck(t *testing.T, s set.Set[int], value int, l int) {
 	t.Helper()
 
 	contained := s.Remove(value)
@@ -76,7 +76,7 @@ func FuzzSet_Operations(f *testing.F) {
 
 		numSets := rand.Intn(7) + 1
 
-		sets := make([]*set.Set[int], numSets)
+		sets := make([]set.Set[int], numSets)
 
 		for i := range numSets {
 			numElements := rand.Intn(32)

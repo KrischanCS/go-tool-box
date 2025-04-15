@@ -10,6 +10,7 @@ package set
 
 import (
 	"fmt"
+	"iter"
 	"sort"
 	"strings"
 )
@@ -25,26 +26,26 @@ type Set[T comparable] struct {
 }
 
 // Of creates a new set with the given values.
-func Of[T comparable](values ...T) *Set[T] {
+func Of[T comparable](values ...T) Set[T] {
 	s := Set[T]{m: make(map[T]struct{}, len(values))}
 
 	for _, v := range values {
 		s.m[v] = placeholder
 	}
 
-	return &s
+	return s
 }
 
 // WithCapacity creates a Set with the given capacity.
-func WithCapacity[T comparable](capacity int) *Set[T] {
-	return &Set[T]{m: make(map[T]struct{}, capacity)}
+func WithCapacity[T comparable](capacity int) Set[T] {
+	return Set[T]{m: make(map[T]struct{}, capacity)}
 }
 
 // Add adds the given value to the set if it is not already present.
 //
 // It returns true if the value was newly added, and false if it was already
 // present.
-func (s *Set[T]) Add(value T) bool {
+func (s Set[T]) Add(value T) bool {
 	if _, ok := s.m[value]; ok {
 		return false
 	}
@@ -57,7 +58,7 @@ func (s *Set[T]) Add(value T) bool {
 // Remove removes the given value from the set.
 //
 // It returns true if the value existed and false if not.
-func (s *Set[T]) Remove(value T) bool {
+func (s Set[T]) Remove(value T) bool {
 	if _, ok := s.m[value]; !ok {
 		return false
 	}
@@ -68,12 +69,12 @@ func (s *Set[T]) Remove(value T) bool {
 }
 
 // Clear removes all values from the set.
-func (s *Set[T]) Clear() {
+func (s Set[T]) Clear() {
 	clear(s.m)
 }
 
 // Values returns a slice of all values in the set without any particular order.
-func (s *Set[T]) Values() []T {
+func (s Set[T]) Values() []T {
 	values := make([]T, 0, len(s.m))
 
 	for v := range s.m {
@@ -84,12 +85,12 @@ func (s *Set[T]) Values() []T {
 }
 
 // Len returns the number of values in the set.
-func (s *Set[T]) Len() int {
+func (s Set[T]) Len() int {
 	return len(s.m)
 }
 
 // IsEmpty returns true if the set is empty.
-func (s *Set[T]) IsEmpty() bool {
+func (s Set[T]) IsEmpty() bool {
 	return len(s.m) == 0
 }
 
@@ -99,7 +100,7 @@ func (s *Set[T]) IsEmpty() bool {
 //
 // The values are sorted by their string representation for easier overview,
 // the actual set is not sorted.
-func (s *Set[T]) String() string {
+func (s Set[T]) String() string {
 	if s.IsEmpty() {
 		return fmt.Sprintf("(Set[%T]: <empty>)", *new(T))
 	}

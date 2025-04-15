@@ -2,7 +2,7 @@ package set
 
 // Intersection removes all values from the set that are not contained in all
 // other given sets.
-func (s *Set[T]) Intersection(others ...*Set[T]) {
+func (s Set[T]) Intersection(others ...Set[T]) {
 	for v := range s.m {
 		if !allContains(others, v) {
 			s.Remove(v)
@@ -12,7 +12,7 @@ func (s *Set[T]) Intersection(others ...*Set[T]) {
 
 // IntersectionOf creates a new set that contains the values which are present
 // in all given sets.
-func IntersectionOf[T comparable](sets ...*Set[T]) *Set[T] {
+func IntersectionOf[T comparable](sets ...Set[T]) Set[T] {
 	switch len(sets) {
 	case 0:
 		return Of[T]()
@@ -32,7 +32,7 @@ func IntersectionOf[T comparable](sets ...*Set[T]) *Set[T] {
 	return s
 }
 
-func allContains[T comparable](others []*Set[T], v T) bool {
+func allContains[T comparable](others []Set[T], v T) bool {
 	for _, other := range others {
 		if !other.Contains(v) {
 			return false
@@ -42,7 +42,7 @@ func allContains[T comparable](others []*Set[T], v T) bool {
 	return true
 }
 
-func swapShortestFirst[T comparable](sets []*Set[T]) {
+func swapShortestFirst[T comparable](sets []Set[T]) {
 	indexShortest := 0
 	for i, set := range sets {
 		if len(set.m) < len(sets[indexShortest].m) {

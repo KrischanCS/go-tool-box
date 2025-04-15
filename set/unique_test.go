@@ -15,8 +15,8 @@ func TestSet_Unique(t *testing.T) {
 	// Arrange
 	type test struct {
 		name      string
-		set       *set.Set[any]
-		otherSets []*set.Set[any]
+		set       set.Set[any]
+		otherSets []set.Set[any]
 		want      []any
 	}
 
@@ -24,37 +24,37 @@ func TestSet_Unique(t *testing.T) {
 		{
 			name:      "Should not modify set if no other sets are given",
 			set:       set.Of[any]("a", "b", "c"),
-			otherSets: []*set.Set[any]{},
+			otherSets: []set.Set[any]{},
 			want:      []any{"a", "b", "c"},
 		},
 		{
 			name:      "Should be empty set if all sets are empty",
 			set:       set.Of[any](),
-			otherSets: []*set.Set[any]{},
+			otherSets: []set.Set[any]{},
 			want:      []any{},
 		},
 		{
 			name:      "Should be empty if all values are in common",
 			set:       set.Of[any](1, 2, 3),
-			otherSets: []*set.Set[any]{set.Of[any](1, 2, 3)},
+			otherSets: []set.Set[any]{set.Of[any](1, 2, 3)},
 			want:      []any{},
 		},
 		{
 			name:      "Should contain all values if they are all different",
 			set:       set.Of[any](1, 2, 3),
-			otherSets: []*set.Set[any]{set.Of[any](4, 5, 6)},
+			otherSets: []set.Set[any]{set.Of[any](4, 5, 6)},
 			want:      []any{1, 2, 3, 4, 5, 6},
 		},
 		{
 			name:      "Should contain all values if they are all different with multiple sets",
 			set:       set.Of[any](6.283185, 2.718, 9.81),
-			otherSets: []*set.Set[any]{set.Of[any](1.6605, 1.618), set.Of[any](1.38, 1.602)},
+			otherSets: []set.Set[any]{set.Of[any](1.6605, 1.618), set.Of[any](1.38, 1.602)},
 			want:      []any{6.283185, 2.718, 9.81, 1.6605, 1.618, 1.38, 1.602},
 		},
 		{
 			name: "Should contain all values which are unique over all sets",
 			set:  set.Of[any](point{1, 2}, point{3, 4}),
-			otherSets: []*set.Set[any]{
+			otherSets: []set.Set[any]{
 				set.Of[any](point{9, 10}, point{3, 4}, point{5, 6}),
 				set.Of[any](point{3, 4}, point{7, 8}, point{9, 10}),
 			},
@@ -83,29 +83,29 @@ func TestUniqueOf(t *testing.T) {
 	// Arrange
 	type test struct {
 		name string
-		sets []*set.Set[any]
+		sets []set.Set[any]
 		want []any
 	}
 
 	tests := []test{
 		{
 			name: "Should create a new, empty set if no sets are given",
-			sets: []*set.Set[any]{},
+			sets: []set.Set[any]{},
 			want: []any{},
 		},
 		{
 			name: "Should create a copy of given set if only one is given",
-			sets: []*set.Set[any]{set.Of[any]("a", "b", "c")},
+			sets: []set.Set[any]{set.Of[any]("a", "b", "c")},
 			want: []any{"a", "b", "c"},
 		},
 		{
 			name: "Should create empty set if all sets are empty",
-			sets: []*set.Set[any]{set.Of[any](), set.Of[any](), set.Of[any]()},
+			sets: []set.Set[any]{set.Of[any](), set.Of[any](), set.Of[any]()},
 			want: []any{},
 		},
 		{
 			name: "Should create an empty set if all values are common",
-			sets: []*set.Set[any]{
+			sets: []set.Set[any]{
 				set.Of[any](1, 2, 3),
 				set.Of[any](1, 2, 3),
 			},
@@ -113,7 +113,7 @@ func TestUniqueOf(t *testing.T) {
 		},
 		{
 			name: "Should create a set with all values if they are all different",
-			sets: []*set.Set[any]{
+			sets: []set.Set[any]{
 				set.Of[any](1, 2, 3),
 				set.Of[any](4, 5, 6),
 			},
@@ -121,7 +121,7 @@ func TestUniqueOf(t *testing.T) {
 		},
 		{
 			name: "Should create a set with all values if they are all different with multiple sets",
-			sets: []*set.Set[any]{
+			sets: []set.Set[any]{
 				set.Of[any](6.283185, 2.718, 9.81),
 				set.Of[any](1.6605, 1.618),
 				set.Of[any](1.38, 1.602),
@@ -130,7 +130,7 @@ func TestUniqueOf(t *testing.T) {
 		},
 		{
 			name: "Should create a set with all values which are unique over all sets",
-			sets: []*set.Set[any]{
+			sets: []set.Set[any]{
 				set.Of[any](point{1, 2}, point{3, 4}),
 				set.Of[any](point{9, 10}, point{3, 4}, point{5, 6}),
 				set.Of[any](point{3, 4}, point{7, 8}, point{9, 10}),

@@ -2,7 +2,7 @@ package set
 
 // Unique modifies the set, to only contain values which appear only in one set,
 // including the set itself and all given other sets.
-func (s *Set[T]) Unique(others ...*Set[T]) {
+func (s Set[T]) Unique(others ...Set[T]) {
 	if len(others) == 0 {
 		return
 	}
@@ -20,7 +20,7 @@ func (s *Set[T]) Unique(others ...*Set[T]) {
 
 // UniqueOf creates a new set that contains all values which appear only in one
 // of the given sets.
-func UniqueOf[T comparable](sets ...*Set[T]) *Set[T] {
+func UniqueOf[T comparable](sets ...Set[T]) Set[T] {
 	switch len(sets) {
 	case 0:
 		return Of[T]()
@@ -35,7 +35,7 @@ func UniqueOf[T comparable](sets ...*Set[T]) *Set[T] {
 	return s
 }
 
-func setOfUniqueElements[T comparable](elementCounts map[T]int) *Set[T] {
+func setOfUniqueElements[T comparable](elementCounts map[T]int) Set[T] {
 	s := WithCapacity[T](len(elementCounts))
 
 	for v, count := range elementCounts {
@@ -48,7 +48,7 @@ func setOfUniqueElements[T comparable](elementCounts map[T]int) *Set[T] {
 }
 
 // countAppearances counts int how many of the given sets each value appears.
-func countAppearances[T comparable](set *Set[T], sets []*Set[T]) map[T]int {
+func countAppearances[T comparable](set Set[T], sets []Set[T]) map[T]int {
 	m := make(map[T]int, set.Len())
 
 	for _, v := range set.Values() {
