@@ -47,83 +47,19 @@ func BenchmarkSet_Unique(b *testing.B) {
 }
 
 func BenchmarkUnionOf(b *testing.B) {
-	b.ReportAllocs()
-
-	//nolint:gosec
-	rand := rand.New(rand.NewSource(0))
-
-	chosenSets := make([]*set.Set[string], 0, 5)
-	for b.Loop() {
-		chosenSets = chosenSets[:0]
-
-		amount := rand.Intn(5) + 1
-
-		for range amount {
-			chosenSets = append(chosenSets, operationBenchmarkSets[rand.Intn(len(operationBenchmarkSets))])
-		}
-
-		_ = set.UnionOf(chosenSets...)
-	}
+	benchOpOf(b, set.UnionOf)
 }
 
 func BenchmarkDifferenceOf(b *testing.B) {
-	b.ReportAllocs()
-
-	//nolint:gosec
-	rand := rand.New(rand.NewSource(0))
-
-	chosenSets := make([]*set.Set[string], 0, 5)
-	for b.Loop() {
-		chosenSets = chosenSets[:0]
-
-		amount := rand.Intn(5) + 1
-
-		for range amount {
-			chosenSets = append(chosenSets, operationBenchmarkSets[rand.Intn(len(operationBenchmarkSets))])
-		}
-
-		_ = set.DifferenceOf(chosenSets...)
-	}
+	benchOpOf(b, set.DifferenceOf)
 }
 
 func BenchmarkIntersectionOf(b *testing.B) {
-	b.ReportAllocs()
-
-	//nolint:gosec
-	rand := rand.New(rand.NewSource(0))
-
-	chosenSets := make([]*set.Set[string], 0, 5)
-	for b.Loop() {
-		chosenSets = chosenSets[:0]
-
-		amount := rand.Intn(5) + 1
-
-		for range amount {
-			chosenSets = append(chosenSets, operationBenchmarkSets[rand.Intn(len(operationBenchmarkSets))])
-		}
-
-		set.IntersectionOf(chosenSets...)
-	}
+	benchOpOf(b, set.IntersectionOf)
 }
 
 func BenchmarkUniqueOf(b *testing.B) {
-	b.ReportAllocs()
-
-	//nolint:gosec
-	rand := rand.New(rand.NewSource(0))
-
-	chosenSets := make([]*set.Set[string], 0, 5)
-	for b.Loop() {
-		chosenSets = chosenSets[:0]
-
-		amount := rand.Intn(5) + 1
-
-		for range amount {
-			chosenSets = append(chosenSets, operationBenchmarkSets[rand.Intn(len(operationBenchmarkSets))])
-		}
-
-		_ = set.UnionOf(chosenSets...)
-	}
+	benchOpOf(b, set.UniqueOf)
 }
 
 func benchOp(b *testing.B, fn func(sets []*set.Set[string])) {
@@ -144,5 +80,26 @@ func benchOp(b *testing.B, fn func(sets []*set.Set[string])) {
 		}
 
 		fn(chosenSets)
+	}
+}
+
+func benchOpOf(b *testing.B, fn func(sets ...*set.Set[string]) *set.Set[string]) {
+	b.Helper()
+	b.ReportAllocs()
+
+	//nolint:gosec
+	rand := rand.New(rand.NewSource(0))
+
+	chosenSets := make([]*set.Set[string], 0, 5)
+	for b.Loop() {
+		chosenSets = chosenSets[:0]
+
+		amount := rand.Intn(5) + 1
+
+		for range amount {
+			chosenSets = append(chosenSets, operationBenchmarkSets[rand.Intn(len(operationBenchmarkSets))])
+		}
+
+		_ = fn(chosenSets...)
 	}
 }
