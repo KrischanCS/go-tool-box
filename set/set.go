@@ -10,9 +10,7 @@ package set
 
 import (
 	"fmt"
-	"iter"
 	"sort"
-	"strings"
 )
 
 //nolint:gochecknoglobals
@@ -94,6 +92,11 @@ func (s Set[T]) IsEmpty() bool {
 	return len(s.m) == 0
 }
 
+// Clone creates a shallow copy of the set.
+func (s Set[T]) Clone() Set[T] {
+	return Of[T](s.Values()...)
+}
+
 // String returns a string representation in the format:
 //   - If Present: "(Set[{{type}}]: [{{value 1}} {{value 2}} ...])"
 //   - If Empty: "(Set[{{type}}]: <empty>)"
@@ -112,18 +115,5 @@ func (s Set[T]) String() string {
 
 	sort.Strings(values)
 
-	var sb strings.Builder
-
-	sb.WriteString(fmt.Sprintf("(Set[%T]: ", *new(T)))
-
-	sb.WriteString(fmt.Sprintf("%s", values))
-
-	sb.WriteString(")")
-
-	return sb.String()
-}
-
-// Clone creates a shallow copy of the set.
-func (s *Set[T]) Clone() *Set[T] {
-	return Of[T](s.Values()...)
+	return fmt.Sprintf("(Set[%T]: %s)", *new(T), values)
 }

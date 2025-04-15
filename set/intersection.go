@@ -21,8 +21,8 @@ func IntersectionOf[T comparable](sets ...Set[T]) Set[T] {
 	}
 
 	// If length of the given sets varies a lot, it is faster to check only it's
-	// elements in the other sets. Also less memory is allocated when cloning the
-	// shortest set.
+	// elements in the other sets. Also less memory is allocated when cloning
+	// the shortest set.
 	swapShortestFirst(sets)
 
 	s := sets[0].Clone()

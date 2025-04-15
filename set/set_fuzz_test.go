@@ -35,15 +35,13 @@ func FuzzSet(f *testing.F) {
 func addAndCheck(t *testing.T, s set.Set[int], value int, l int) {
 	t.Helper()
 
-	contained := s.Contains(value)
-
-	s.Add(value)
+	notContained := s.Add(value)
 	assert.True(t, s.Contains(value))
 
-	if contained {
-		assert.Equal(t, l, s.Len())
-	} else {
+	if notContained {
 		assert.Equal(t, l+1, s.Len())
+	} else {
+		assert.Equal(t, l, s.Len())
 	}
 }
 
