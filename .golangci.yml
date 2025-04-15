@@ -36,10 +36,11 @@ linters:
     varnamelen:
       max-distance: 15
       ignore-names:
-        - i
-        - w
-        - ok
+        - i # index
+        - w # writer
+        - ok # bool (ok pattern)
         - tc # TestCase
+        - fn # function parameter
 
 formatters:
   enable:
