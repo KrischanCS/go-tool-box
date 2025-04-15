@@ -17,9 +17,7 @@ func UnionOf[T comparable](sets ...*Set[T]) *Set[T] {
 
 	s := sets[0].Clone()
 
-	for _, set := range sets[1:] {
-		s.Union(set)
-	}
+	s.Union(sets[1:]...)
 
 	return s
 }
