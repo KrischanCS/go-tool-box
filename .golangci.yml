@@ -42,6 +42,9 @@ linters:
         - tc # TestCase
         - fn # function parameter
 
+    nlreturn:
+      block-size: 2
+
 formatters:
   enable:
     - gofmt

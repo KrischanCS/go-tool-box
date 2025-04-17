@@ -24,7 +24,6 @@ func ExampleOf() {
 		v, err := res.Get()
 		if err != nil {
 			fmt.Println("Got error:", err)
-
 			continue
 		}
 

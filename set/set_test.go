@@ -133,6 +133,6 @@ func TestSet_All_break(t *testing.T) {
 	}
 
 	// Assert
-	assert.Equal(t, 1, len(dst))
+	assert.Len(t, dst, 1)
 	assert.Subset(t, []string{"a", "b", "c"}, dst)
 }

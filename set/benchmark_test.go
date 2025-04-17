@@ -54,6 +54,7 @@ func BenchmarkAdd(b *testing.B) {
 
 	assert.Equal(b, numDifferentValues, s.Len())
 }
+
 //nolint:gochecknoglobals
 var operationBenchmarkSets = []set.Set[string]{
 	set.Of("a", "b", "c"),
