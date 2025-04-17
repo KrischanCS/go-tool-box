@@ -4,9 +4,56 @@ import (
 	"math/rand"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/KrischanCS/go-tool-box/set"
 )
 
+func BenchmarkNew(b *testing.B) {
+	b.ReportAllocs()
+
+	const (
+		numAdds            = 1500
+		numDifferentValues = 333
+	)
+
+	ints := make([]int, numAdds)
+	for i := range numAdds {
+		ints[i] = i % numDifferentValues
+	}
+
+	var s set.Set[int]
+	for b.Loop() {
+		s = set.Of[int](ints...)
+	}
+
+	assert.Equal(b, numDifferentValues, s.Len())
+}
+
+func BenchmarkAdd(b *testing.B) {
+	b.ReportAllocs()
+
+	const (
+		numAdds            = 1500
+		numDifferentValues = 333
+	)
+
+	values := make([]int, numAdds)
+	for i := range numAdds {
+		values[i] = i % numDifferentValues
+	}
+
+	var s set.Set[int]
+	for b.Loop() {
+		s = set.Of[int]()
+
+		for _, v := range values {
+			s.Add(v)
+		}
+	}
+
+	assert.Equal(b, numDifferentValues, s.Len())
+}
 //nolint:gochecknoglobals
 var operationBenchmarkSets = []set.Set[string]{
 	set.Of("a", "b", "c"),
