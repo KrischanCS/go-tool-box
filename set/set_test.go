@@ -102,3 +102,37 @@ func TestSet_Clear(t *testing.T) {
 
 	assert.Equal(t, 0, s.Len())
 }
+
+func TestSet_All(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := set.Of[string]("a", "b", "c")
+	dst := make([]string, 0, s.Len())
+
+	// Act
+	for v := range s.All() {
+		dst = append(dst, v)
+	}
+
+	// Assert
+	assert.ElementsMatch(t, []string{"a", "b", "c"}, dst)
+}
+
+func TestSet_All_break(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := set.Of[string]("a", "b", "c")
+	dst := make([]string, 0, 1)
+
+	// Act
+	for v := range s.All() {
+		dst = append(dst, v)
+		break
+	}
+
+	// Assert
+	assert.Equal(t, 1, len(dst))
+	assert.Subset(t, []string{"a", "b", "c"}, dst)
+}

@@ -10,6 +10,7 @@ package set
 
 import (
 	"fmt"
+	"iter"
 	"sort"
 )
 
@@ -71,7 +72,8 @@ func (s Set[T]) Clear() {
 	clear(s.m)
 }
 
-// Values returns a slice of all values in the set without any particular order.
+// Values returns a slice of all values in the set without any particular
+// order.
 func (s Set[T]) Values() []T {
 	values := make([]T, 0, len(s.m))
 
@@ -80,6 +82,18 @@ func (s Set[T]) Values() []T {
 	}
 
 	return values
+}
+
+// All creates an iterator over all values in the set without any particular
+// order.
+func (s Set[T]) All() iter.Seq[T] {
+	return func(yield func(T) bool) {
+		for v := range s.m {
+			if !yield(v) {
+				return
+			}
+		}
+	}
 }
 
 // Len returns the number of values in the set.
