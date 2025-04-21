@@ -1,7 +1,6 @@
 package iterator
 
 import (
-	"log"
 	"maps"
 	"slices"
 	"strconv"
@@ -421,6 +420,70 @@ func BenchmarkZip_For(b *testing.B) {
 
 			intRes += v*3 - 1
 			strRes += slice2[i]
+
+			if v == breakAt {
+				break
+			}
+		}
+	}
+}
+
+// Map
+
+func BenchmarkMap(b *testing.B) {
+	iterator := FromTo(from, to)
+
+	for b.Loop() {
+		res := 0
+		for v := range Map(iterator, func(i int) int { return i*3 - 1 }) {
+			res += v
+			if v == breakAt {
+				break
+			}
+		}
+	}
+}
+
+func BenchmarkMap_For(b *testing.B) {
+	slice := slices.Collect(FromTo(from, to))
+
+	for b.Loop() {
+		res := 0
+		for _, v := range slice {
+			v = v*3 - 1
+			res += v
+			if v == breakAt {
+				break
+			}
+		}
+	}
+}
+
+// Reduce
+
+func BenchmarkReduce(b *testing.B) {
+	iterator := FromTo(from, to)
+
+	for b.Loop() {
+		acc := 0
+		Reduce(iterator, &acc, func(acc *int, v int) {
+			*acc += v*3 - 1
+			if v == breakAt {
+				return
+			}
+		})
+	}
+}
+
+func BenchmarkReduce_For(b *testing.B) {
+	slice := slices.Collect(FromTo(from, to))
+
+	for b.Loop() {
+		res := 0
+		acc := &res
+		
+		for _, v := range slice {
+			*acc = v*3 - 1
 
 			if v == breakAt {
 				break
