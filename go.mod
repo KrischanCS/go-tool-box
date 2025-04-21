@@ -2,7 +2,10 @@ module github.com/KrischanCS/go-tool-box
 
 go 1.24.1
 
-require github.com/stretchr/testify v1.10.0
+require (
+	github.com/stretchr/testify v1.10.0
+	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
+)
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect

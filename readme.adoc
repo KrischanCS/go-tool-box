@@ -1,11 +1,9 @@
 == Go Tool Box
 
-This is a collection of packages, implementing various functionalities I tend to implement in multiple of my projects.
+This is a collection of packages, which are a combination of stuff I either implemented multiple times before, or I want to try out and don't have a better place for it.
 
-Not all of them are idiomatic to Go, and not recommended for production code, but I find them useful for playground projects or tests.
+Not all of them are idiomatic to Go, and not recommended for production code.
 
-Most of the packages are rather small.
-If you consider using any of them, maybe you should just use this module to look up how it's implemented instead of adding a dependency to your project.
 Remember:
 
 [quote,Rob Pike in his 'Go Proverbs' talk,https:go-proverbs.github.io]
@@ -52,8 +50,81 @@ if err != nil {
 
 ==== Optional
 
-Package optional provides a generic Optional type for Go.
+Optional provides a generic Optional type for Go.
 
 For a lot of use cases, I don't like mixing the concepts of referencing and optionality, as it happens with pointers, so this provides an alternative.
 
 The Optionals implemented in this package handle marshalling and unmarshalling to/from json and xml and are handling null-values, not existing values and omitzero/omitempty.
+
+==== Iterator
+
+Iterator implements a handful of different iterators. currently this is mainly for playing around and getting to know the characteristics of the go iterators, which are part of the language since go 1.23 (when writing this, go 1.24 is the recent version, so they are still quite new).
+
+In the tests of this package some benchmarks are included, which compare the performance of the different iterators with equivalent implementations using normal for-loops.
+Executing those can be seen that the iterators add some overhead (on my machine roughly 2-4 ns slower per loop execution than a standard for loop), so in performance critical code they should probably be avoided for tight loops.
+If more significant work is done in the loop body, the overhead becomes more negligible.
+
+On the other hand the iterators can improve readability and clarity in some cases in my opinion, e.g. the `Zip` or
+`Filter`
+
+.Filter with iterator.
+[source, go]
+----
+res := 0
+for v := range iterator.Filter(iterator, divisibleByThree) {
+	res += v*3 - 1
+	if v == breakAt {
+		break
+	}
+}
+----
+
+.Filter with for-loop.
+[source, go]
+----
+res := 0
+for i := from; i < to; i++ {
+	if !divisibleByThree(i) {
+		continue
+	}
+
+	res += i*3 - 1
+	if i == breakAt {
+		break
+	}
+}
+----
+
+.Zip with iterator.
+[source, go]
+----
+intRes := 0
+strRes := ""
+for pair := range iterator.Zip(iterator1, iterator2) {
+	intRes += pair.Left*3 - 1
+	strRes += pair.Right
+	if pair.Left == breakAt {
+		break
+	}
+}
+----
+
+.Zip with for-loop.
+[source, go]
+----
+intRes := 0
+strRes := ""
+
+for i, v := range slice1 {
+	if i > len(slice2)-1 {
+		break
+	}
+
+	intRes += v*3 - 1
+	strRes += slice2[i]
+
+	if v == breakAt {
+		break
+	}
+}
+----

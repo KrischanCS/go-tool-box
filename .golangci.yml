@@ -1,17 +1,21 @@
 version: "2"
+
 linters:
   default: all
   disable:
-    - depguard
-    - exhaustruct
-    - ireturn
-    - testpackage
-    - tparallel
-    - wrapcheck
-    - nonamedreturns
+    - depguard # Not restricting dependencies at the moment
+    - ireturn # Allow returning interfaces
+    - testpackage # Allow white-box testing
+    - tparallel # Using paralleltest instead, it allows ignoring subtests
+    - wrapcheck # Allow returning unwrapped errors
+    - noctx # Allow http requests without context, http requests in this package are only called in generation, and prefer readability there over robustness.
+
+
   settings:
-    dupl:
-      threshold: 150
+
+    errcheck:
+      check-type-assertions: true # Always check type assertions
+      check-blank: true # Don't allow swallowing errors
 
     exhaustive:
       check:
@@ -20,27 +24,35 @@ linters:
       default-signifies-exhaustive: true
 
     gocognit:
-      min-complexity: 5
+      min-complexity: 8 # Authors of gocognit recommend to change the default from 30 to 10-20, feeling good with 8  at the moment.
 
     paralleltest:
-      ignore-missing-subtests: true
+      ignore-missing-subtests: true # If there are lots of tests and short test-cases (subtest), it should be faster there should be no gains in running all subtests in parallel, and calling t.Parallel() all the time just adds noise.
 
     staticcheck:
       checks:
-        - all
+        - all # Enable all checks
 
     testifylint:
       disable:
-        - require-error
+        - require-error # I only use require in the "Arrange" phase of tests, in the "Assert" phase I prefer normal assertions also for errors
 
     varnamelen:
-      max-distance: 15
+      max-distance: 15 # Don't care too much about short identifiers in go, changing from default 6 to 15
+      ignore-decls:
+        - i int # index
+        - ok bool # ok pattern
+        # Writers
+        - w io.Writer
+        - w Writer
+        - w *bytes.Buffer
+        # String builders
+        - sb strings.Builder
+        - sb *strings.Builder
       ignore-names:
-        - i # index
-        - w # writer
-        - ok # bool (ok pattern)
-        - tc # TestCase
+        - tc # TestCase, many different types
         - fn # function parameter
+        - to # as in from -> to
 
     nlreturn:
       block-size: 2
