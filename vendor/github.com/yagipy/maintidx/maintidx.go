@@ -3,7 +3,6 @@ package maintidx
 import (
 	"go/ast"
 	"go/token"
-
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
 	"golang.org/x/tools/go/ast/inspector"

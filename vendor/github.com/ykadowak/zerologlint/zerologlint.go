@@ -38,7 +38,7 @@ type linter struct {
 	// Everytime the zerolog.Event is dispatched with Msg() or Send(),
 	// deletes that block from this set.
 	// At the end, check if the set is empty, or report the not dispatched block.
-	eventSet map[posser]struct{}
+	eventSet    map[posser]struct{}
 	// deleteLater holds the ssa block that should be deleted from eventSet after
 	// all the inspection is done.
 	// this is required because `else` ssa block comes after the dispatch of `if`` block.

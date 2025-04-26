@@ -3,8 +3,6 @@
 
 package astcopy
 
-import "go/ast"
-
 // FuncType returns x deep copy.
 // Copy of nil argument is nil.
 func FuncType(x *ast.FuncType) *ast.FuncType {

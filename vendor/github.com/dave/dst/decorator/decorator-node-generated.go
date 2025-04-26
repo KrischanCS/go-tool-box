@@ -1,10 +1,9 @@
 package decorator
 
 import (
+	"github.com/dave/dst"
 	"go/ast"
 	"go/token"
-
-	"github.com/dave/dst"
 )
 
 func (f *fileDecorator) decorateNode(parent ast.Node, parentName, parentField, parentFieldType string, n ast.Node) (dst.Node, error) {
