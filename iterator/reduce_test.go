@@ -7,7 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+//nolint:funlen
 func TestReduce(t *testing.T) {
+	t.Parallel()
 
 	type testCase[IN any, ACC any] struct {
 		name        string
@@ -31,7 +33,7 @@ func TestReduce(t *testing.T) {
 			name:        "Should not modify the accumulator if the fn does nothing",
 			input:       Of[int](1, 2, 3, 4, 5),
 			accumulator: 0,
-			fn:          func(acc *int, v int) {},
+			fn:          func(_ *int, _ int) {},
 			want:        0,
 		},
 		{

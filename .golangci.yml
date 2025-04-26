@@ -8,7 +8,9 @@ linters:
     - testpackage # Allow white-box testing
     - tparallel # Using paralleltest instead, it allows ignoring subtests
     - wrapcheck # Allow returning unwrapped errors
-    - noctx # Allow http requests without context, http requests in this package are only called in generation, and prefer readability there over robustness.
+    - exhaustruct # Allow creating structs with implicit default-value-fields
+    - cyclop # Prefer cognitive complexity over cyclomatic complexity, so use only gocognit
+    - nonamedreturns # I like named returns, as long as they are not combined with naked returns
 
 
   settings:
@@ -42,13 +44,15 @@ linters:
       ignore-decls:
         - i int # index
         - ok bool # ok pattern
+
         # Writers
         - w io.Writer
-        - w Writer
         - w *bytes.Buffer
+
         # String builders
         - sb strings.Builder
         - sb *strings.Builder
+
       ignore-names:
         - tc # TestCase, many different types
         - fn # function parameter

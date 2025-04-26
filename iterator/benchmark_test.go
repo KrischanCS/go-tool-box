@@ -27,6 +27,7 @@ func BenchmarkFromTo(b *testing.B) {
 		res := 0
 		for v := range iterator {
 			res += v*3 - 1
+
 			if v == breakAt {
 				break
 			}
@@ -40,6 +41,7 @@ func BenchmarkFromTo_For(b *testing.B) {
 
 		for i := from; i < to; i++ {
 			res += i*3 - 1
+
 			if i == breakAt {
 				break
 			}
@@ -54,6 +56,7 @@ func BenchmarkFromToInclusive(b *testing.B) {
 		res := 0
 		for v := range iterator {
 			res += v*3 - 1
+
 			if v == breakAt {
 				break
 			}
@@ -67,6 +70,7 @@ func BenchmarkFromToInclusive_For(b *testing.B) {
 
 		for i := from; i <= to; i++ {
 			res += i*3 - 1
+
 			if i == breakAt {
 				break
 			}
@@ -81,6 +85,7 @@ func BenchmarkFromStepTo(b *testing.B) {
 		res := 0
 		for v := range iterator {
 			res += int(v*3) - 1
+
 			if v >= breakAt {
 				break
 			}
@@ -94,6 +99,7 @@ func BenchmarkFromStepTo_For(b *testing.B) {
 
 		for i := float64(from); i < float64(to); i += step {
 			res += i*3 - 1
+
 			if i >= breakAt {
 				break
 			}
@@ -115,11 +121,11 @@ func BenchmarkFilter(b *testing.B) {
 
 		for v := range Filter(iterator, divisibleByThree) {
 			res += v*3 - 1
+
 			if v >= breakAt {
 				break
 			}
 		}
-
 	}
 }
 
@@ -138,6 +144,7 @@ func BenchmarkFilter_For(b *testing.B) {
 			}
 
 			res += i*3 - 1
+
 			if i >= breakAt {
 				break
 			}
@@ -154,6 +161,7 @@ func BenchmarkOf(b *testing.B) {
 		res := 0
 		for v := range iterator {
 			res += v*3 - 1
+
 			if v == breakAt {
 				break
 			}
@@ -169,6 +177,7 @@ func BenchmarkOf_For(b *testing.B) {
 
 		for _, v := range slice {
 			res += v*3 - 1
+
 			if v == breakAt {
 				break
 			}
@@ -180,6 +189,7 @@ func BenchmarkOf_For(b *testing.B) {
 
 func BenchmarkPickLeft(b *testing.B) {
 	m := make(map[string]int)
+
 	for v := range FromTo(from, to) {
 		str := strconv.Itoa(v)
 		m[str] = v
@@ -192,6 +202,7 @@ func BenchmarkPickLeft(b *testing.B) {
 		res := ""
 		for value := range PickLeft(values) {
 			res += value
+
 			if value == breakAt {
 				break
 			}
@@ -201,6 +212,7 @@ func BenchmarkPickLeft(b *testing.B) {
 
 func BenchmarkPickLeft_For(b *testing.B) {
 	m := make(map[string]int)
+
 	for v := range FromTo(from, to) {
 		str := strconv.Itoa(v)
 		m[str] = v
@@ -212,6 +224,7 @@ func BenchmarkPickLeft_For(b *testing.B) {
 		res := ""
 		for key := range m {
 			res += key
+
 			if key == breakAt {
 				break
 			}
@@ -221,6 +234,7 @@ func BenchmarkPickLeft_For(b *testing.B) {
 
 func BenchmarkPickRight(b *testing.B) {
 	m := make(map[string]int)
+
 	for v := range FromTo(from, to) {
 		str := strconv.Itoa(v)
 		m[str] = v
@@ -232,6 +246,7 @@ func BenchmarkPickRight(b *testing.B) {
 		res := 0
 		for value := range PickRight(values) {
 			res += value*3 - 1
+
 			if value == breakAt {
 				break
 			}
@@ -241,6 +256,7 @@ func BenchmarkPickRight(b *testing.B) {
 
 func BenchmarkPickRight_For(b *testing.B) {
 	m := make(map[string]int)
+
 	for v := range FromTo(from, to) {
 		str := strconv.Itoa(v)
 		m[str] = v
@@ -250,6 +266,7 @@ func BenchmarkPickRight_For(b *testing.B) {
 		res := 0
 		for _, value := range m {
 			res += value*3 - 1
+
 			if value == breakAt {
 				break
 			}
@@ -259,6 +276,7 @@ func BenchmarkPickRight_For(b *testing.B) {
 
 func BenchmarkCombine(b *testing.B) {
 	m := make(map[string]int)
+
 	for v := range FromTo(from, to) {
 		str := strconv.Itoa(v)
 		m[str] = v
@@ -269,9 +287,11 @@ func BenchmarkCombine(b *testing.B) {
 	for b.Loop() {
 		strRes := ""
 		intRes := 0
+
 		for pair := range Combine(values) {
 			strRes += pair.Left
 			intRes += pair.Right*3 - 1
+
 			if pair.Right == breakAt {
 				break
 			}
@@ -281,6 +301,7 @@ func BenchmarkCombine(b *testing.B) {
 
 func BenchmarkCombine_For(b *testing.B) {
 	m := make(map[string]int)
+
 	for v := range FromTo(from, to) {
 		str := strconv.Itoa(v)
 		m[str] = v
@@ -289,9 +310,11 @@ func BenchmarkCombine_For(b *testing.B) {
 	for b.Loop() {
 		strRes := ""
 		intRes := 0
+
 		for key, value := range m {
 			strRes += key
 			intRes += value*3 - 1
+
 			if value == breakAt {
 				break
 			}
@@ -301,6 +324,7 @@ func BenchmarkCombine_For(b *testing.B) {
 
 // Window
 
+//nolint:gocognit
 func BenchmarkFixedWindow(b *testing.B) {
 	iterator := FromTo(from, to)
 
@@ -319,6 +343,7 @@ func BenchmarkFixedWindow(b *testing.B) {
 	}
 }
 
+//nolint:gocognit
 func BenchmarkFixedWindow_For(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 	windowLen := 4
@@ -344,6 +369,7 @@ func BenchmarkFixedWindow_For(b *testing.B) {
 	}
 }
 
+//nolint:gocognit
 func BenchmarkSlidingWindow(b *testing.B) {
 	iterator := FromTo(from, to)
 
@@ -362,6 +388,7 @@ func BenchmarkSlidingWindow(b *testing.B) {
 	}
 }
 
+//nolint:gocognit
 func BenchmarkSlidingWindow_For(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 	windowLen := 4
@@ -370,7 +397,7 @@ func BenchmarkSlidingWindow_For(b *testing.B) {
 		res := 0
 
 	WINDOW:
-		for i := 0; i < len(slice)-windowLen; i++ {
+		for range len(slice) - windowLen {
 			for j := range windowLen {
 				v := slice[j]
 				res += v*3 - 1
@@ -392,6 +419,7 @@ func BenchmarkZip(b *testing.B) {
 	for i := range iterator1 {
 		slice2 = append(slice2, strconv.Itoa(i))
 	}
+
 	iterator2 := Of(slice2...)
 
 	for b.Loop() {
@@ -401,6 +429,7 @@ func BenchmarkZip(b *testing.B) {
 		for pair := range Zip[int, string](iterator1, iterator2) {
 			intRes += pair.Left*3 - 1
 			strRes += pair.Right
+
 			if pair.Left == breakAt {
 				break
 			}
@@ -408,6 +437,7 @@ func BenchmarkZip(b *testing.B) {
 	}
 }
 
+//nolint:gocognit
 func BenchmarkZip_For(b *testing.B) {
 	slice1 := slices.Collect(FromTo(from, to))
 
@@ -419,6 +449,7 @@ func BenchmarkZip_For(b *testing.B) {
 	for b.Loop() {
 		intRes := 0
 		strRes := ""
+
 		for i, v := range slice1 {
 			if i > len(slice2)-1 {
 				break
@@ -443,6 +474,7 @@ func BenchmarkMap(b *testing.B) {
 		res := 0
 		for v := range Map(iterator, func(i int) int { return i*3 - 1 }) {
 			res += v
+
 			if v == breakAt {
 				break
 			}
@@ -455,9 +487,11 @@ func BenchmarkMap_For(b *testing.B) {
 
 	for b.Loop() {
 		res := 0
+
 		for _, v := range slice {
 			v = v*3 - 1
 			res += v
+
 			if v == breakAt {
 				break
 			}
@@ -474,6 +508,7 @@ func BenchmarkReduce(b *testing.B) {
 		acc := 0
 		Reduce(iterator, &acc, func(acc *int, v int) {
 			*acc += v*3 - 1
+
 			if v == breakAt {
 				return
 			}
@@ -559,15 +594,17 @@ func BenchmarkComplexIteration_For(b *testing.B) {
 
 			current := Pair[int, string]{number, letters[i]}
 
-			if len(state) < n-1 {
+			switch {
+			case len(state) < n-1:
 				state = append(state, current)
 				continue
-			} else if len(state) == n-1 {
+			case len(state) == n-1:
 				state = append(state, current)
-			} else {
+			default:
 				for i := range state[:len(state)-1] {
 					state[i] = state[i+1]
 				}
+
 				state[len(state)-1] = current
 			}
 
@@ -580,6 +617,7 @@ func BenchmarkComplexIteration_For(b *testing.B) {
 
 // Complex iterators and higher workload
 
+//nolint:gocognit
 func BenchmarkComplexIteratorsAndWorkload(b *testing.B) {
 	numbers := make([]int, 0, 1000)
 	letters := make([]string, 0, 1000)
@@ -626,6 +664,7 @@ func BenchmarkComplexIteratorsAndWorkload(b *testing.B) {
 			}
 
 			var dst any
+
 			err = json.Unmarshal(v, &dst)
 			if err != nil {
 				panic(err)
@@ -638,7 +677,7 @@ func BenchmarkComplexIteratorsAndWorkload(b *testing.B) {
 	_ = res
 }
 
-//nolint:gocognit
+//nolint:gocognit,funlen
 func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
 	numbers := make([]int, 0, 1000)
 	letters := make([]string, 0, 1000)
@@ -662,7 +701,7 @@ func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
 		res = res[:0]
 
 		n := 5
-		s := make([]Pair[int, string], 0, n)
+		state := make([]Pair[int, string], 0, n)
 
 		for i, number := range numbers {
 			if number%2 != 0 {
@@ -671,24 +710,26 @@ func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
 
 			current := Pair[int, string]{number, letters[i]}
 
-			if len(s) < n-1 {
-				s = append(s, current)
+			switch {
+			case len(state) < n-1:
+				state = append(state, current)
 				continue
-			} else if len(s) == n-1 {
-				s = append(s, current)
-			} else {
-				for i := range s[:len(s)-1] {
-					s[i] = s[i+1]
+			case len(state) == n-1:
+				state = append(state, current)
+			default:
+				for i := range state[:len(state)-1] {
+					state[i] = state[i+1]
 				}
-				s[len(s)-1] = current
+
+				state[len(state)-1] = current
 			}
 
 			t := []intString{
-				{s[0].Left, s[0].Right},
-				{s[1].Left, s[1].Right},
-				{s[2].Left, s[2].Right},
-				{s[3].Left, s[3].Right},
-				{s[4].Left, s[4].Right},
+				{state[0].Left, state[0].Right},
+				{state[1].Left, state[1].Right},
+				{state[2].Left, state[2].Right},
+				{state[3].Left, state[3].Right},
+				{state[4].Left, state[4].Right},
 			}
 
 			v, err := json.Marshal(t)
@@ -697,6 +738,7 @@ func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
 			}
 
 			var dst any
+
 			err = json.Unmarshal(v, &dst)
 			if err != nil {
 				panic(err)
