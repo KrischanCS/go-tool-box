@@ -1,10 +1,13 @@
 == Go Tool Box
 
-This is a collection of packages, which are a combination of stuff I either implemented multiple times before, or I want to try out and don't have a better place for it.
+This is a collection of packages, which I implemented out of one of the following reasons:
 
-Not all of them are idiomatic to Go, and not recommended for production code.
+* I tend to implement parts of it in different projects, and wanted to have them in one place.
+* I wanted to learn and/or play around with some concepts, which I find interesting.
+* I wanted to compare different implementations of the same concept, e.g. iterators.
 
-Remember:
+While there are unit tests for everything in this module, not all of this was ever used in production and I don't
+guarantee to maintain any of this in the future. So I can't recommend to use this in your projects. Remember:
 
 [quote,Rob Pike in his 'Go Proverbs' talk,https:go-proverbs.github.io]
 --
