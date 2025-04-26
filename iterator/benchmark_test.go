@@ -1,6 +1,7 @@
 package iterator
 
 import (
+	"encoding/json"
 	"maps"
 	"slices"
 	"strconv"
@@ -104,6 +105,7 @@ func BenchmarkFromStepTo_For(b *testing.B) {
 
 func BenchmarkFilter(b *testing.B) {
 	iterator := FromTo(from, to)
+
 	divisibleByThree := func(i int) bool {
 		return i%3 == 0
 	}
@@ -113,7 +115,7 @@ func BenchmarkFilter(b *testing.B) {
 
 		for v := range Filter(iterator, divisibleByThree) {
 			res += v*3 - 1
-			if v == breakAt {
+			if v >= breakAt {
 				break
 			}
 		}
@@ -123,16 +125,20 @@ func BenchmarkFilter(b *testing.B) {
 
 //nolint:gocognit
 func BenchmarkFilter_For(b *testing.B) {
+	divisibleByThree := func(i int) bool {
+		return i%3 == 0
+	}
+
 	for b.Loop() {
 		res := 0
 
 		for i := from; i < to; i++ {
-			if i%3 == 0 {
+			if !divisibleByThree(i) {
 				continue
 			}
 
 			res += i*3 - 1
-			if i == breakAt {
+			if i >= breakAt {
 				break
 			}
 		}
@@ -481,7 +487,7 @@ func BenchmarkReduce_For(b *testing.B) {
 	for b.Loop() {
 		res := 0
 		acc := &res
-		
+
 		for _, v := range slice {
 			*acc = v*3 - 1
 
@@ -519,7 +525,7 @@ func BenchmarkComplexIterators(b *testing.B) {
 		})
 
 		for s := range SlidingWindow(filtered, 5) {
-			res = s
+			res = slices.Clone(s)
 		}
 	}
 
@@ -527,7 +533,7 @@ func BenchmarkComplexIterators(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkComplex_For(b *testing.B) {
+func BenchmarkComplexIteration_For(b *testing.B) {
 	numbers := make([]int, 0, 1000)
 	letters := make([]string, 0, 1000)
 
@@ -536,11 +542,14 @@ func BenchmarkComplex_For(b *testing.B) {
 		letters = append(letters, string(byte(i%26+'a')))
 	}
 
+	var res []Pair[int, string]
+
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	for range b.N {
 		n := 5
+
 		state := make([]Pair[int, string], 0, n)
 
 		for i, number := range numbers {
@@ -550,16 +559,150 @@ func BenchmarkComplex_For(b *testing.B) {
 
 			current := Pair[int, string]{number, letters[i]}
 
-			if len(state) < n {
+			if len(state) < n-1 {
 				state = append(state, current)
+				continue
+			} else if len(state) == n-1 {
+				state = append(state, current)
+			} else {
+				for i := range state[:len(state)-1] {
+					state[i] = state[i+1]
+				}
+				state[len(state)-1] = current
+			}
+
+			res = slices.Clone(state)
+		}
+	}
+
+	_ = res
+}
+
+// Complex iterators and higher workload
+
+func BenchmarkComplexIteratorsAndWorkload(b *testing.B) {
+	numbers := make([]int, 0, 1000)
+	letters := make([]string, 0, 1000)
+
+	for i := range 1000 {
+		numbers = append(numbers, i)
+		letters = append(letters, string(byte(i%26+'a')))
+	}
+
+	var res []any
+
+	type intString struct {
+		Number int    `json:"number"`
+		Text   string `json:"text"`
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for b.Loop() {
+		res = res[:0]
+
+		pairs := Zip(
+			PickRight(slices.All(numbers)),
+			PickRight(slices.All(letters)),
+		)
+
+		filtered := Filter(pairs, func(p Pair[int, string]) bool {
+			return p.Left%2 == 0
+		})
+
+		for s := range SlidingWindow(filtered, 5) {
+			t := []intString{
+				{s[0].Left, s[0].Right},
+				{s[1].Left, s[1].Right},
+				{s[2].Left, s[2].Right},
+				{s[3].Left, s[3].Right},
+				{s[4].Left, s[4].Right},
+			}
+
+			v, err := json.Marshal(t)
+			if err != nil {
+				b.Fatal(err)
+			}
+
+			var dst any
+			err = json.Unmarshal(v, &dst)
+			if err != nil {
+				panic(err)
+			}
+
+			res = append(res, dst)
+		}
+	}
+
+	_ = res
+}
+
+//nolint:gocognit
+func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
+	numbers := make([]int, 0, 1000)
+	letters := make([]string, 0, 1000)
+
+	for i := range 1000 {
+		numbers = append(numbers, i)
+		letters = append(letters, string(byte(i%26+'a')))
+	}
+
+	var res []any
+
+	type intString struct {
+		Number int    `json:"number"`
+		Text   string `json:"text"`
+	}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for range b.N {
+		res = res[:0]
+
+		n := 5
+		s := make([]Pair[int, string], 0, n)
+
+		for i, number := range numbers {
+			if number%2 != 0 {
 				continue
 			}
 
-			for i := range state[:len(state)-1] {
-				state[i] = state[i+1]
+			current := Pair[int, string]{number, letters[i]}
+
+			if len(s) < n-1 {
+				s = append(s, current)
+				continue
+			} else if len(s) == n-1 {
+				s = append(s, current)
+			} else {
+				for i := range s[:len(s)-1] {
+					s[i] = s[i+1]
+				}
+				s[len(s)-1] = current
 			}
 
-			state[len(state)-1] = current
+			t := []intString{
+				{s[0].Left, s[0].Right},
+				{s[1].Left, s[1].Right},
+				{s[2].Left, s[2].Right},
+				{s[3].Left, s[3].Right},
+				{s[4].Left, s[4].Right},
+			}
+
+			v, err := json.Marshal(t)
+			if err != nil {
+				b.Fatal(err)
+			}
+
+			var dst any
+			err = json.Unmarshal(v, &dst)
+			if err != nil {
+				panic(err)
+			}
+
+			res = append(res, dst)
 		}
 	}
 }
