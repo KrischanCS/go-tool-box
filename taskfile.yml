@@ -13,8 +13,8 @@ tasks:
 
   check:
     cmds:
-      - go tool goimports -l -w .
       - go tool govulncheck ./...
+      - go tool golangci-lint fmt
       - go tool golangci-lint run --output.tab.path stdout --output.tab.print-linter-name --output.tab.colors
       - task test
     sources:

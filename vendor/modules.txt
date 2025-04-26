@@ -28,9 +28,6 @@ github.com/Antonboom/testifylint/internal/testify
 ## explicit; go 1.18
 github.com/BurntSushi/toml
 github.com/BurntSushi/toml/internal
-# github.com/Crocmagnon/fatcontext v0.7.2
-## explicit; go 1.23.0
-github.com/Crocmagnon/fatcontext/pkg/analyzer
 # github.com/Djarvur/go-err113 v0.0.0-20210108212216-aea10b59be24
 ## explicit; go 1.13
 github.com/Djarvur/go-err113
@@ -202,7 +199,7 @@ github.com/fsnotify/fsnotify
 # github.com/fzipp/gocyclo v0.6.0
 ## explicit; go 1.18
 github.com/fzipp/gocyclo
-# github.com/ghostiam/protogetter v0.3.13
+# github.com/ghostiam/protogetter v0.3.15
 ## explicit; go 1.22.0
 github.com/ghostiam/protogetter
 # github.com/go-critic/go-critic v0.13.0
@@ -274,7 +271,7 @@ github.com/golangci/go-printf-func-name/pkg/analyzer
 # github.com/golangci/gofmt v0.0.0-20250106114630-d62b90e6713d
 ## explicit; go 1.22.0
 github.com/golangci/gofmt/gofmt
-# github.com/golangci/golangci-lint/v2 v2.1.1
+# github.com/golangci/golangci-lint/v2 v2.1.5
 ## explicit; go 1.23.0
 github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 github.com/golangci/golangci-lint/v2/internal/cache
@@ -532,7 +529,7 @@ github.com/kunwardeep/paralleltest/pkg/paralleltest
 # github.com/lasiar/canonicalheader v1.1.2
 ## explicit; go 1.22.0
 github.com/lasiar/canonicalheader
-# github.com/ldez/exptostd v0.4.2
+# github.com/ldez/exptostd v0.4.3
 ## explicit; go 1.22.0
 github.com/ldez/exptostd
 # github.com/ldez/gomoddirectives v0.6.1
@@ -545,7 +542,7 @@ github.com/ldez/grignotin/gomod
 # github.com/ldez/tagliatelle v0.7.1
 ## explicit; go 1.22.0
 github.com/ldez/tagliatelle
-# github.com/ldez/usetesting v0.4.2
+# github.com/ldez/usetesting v0.4.3
 ## explicit; go 1.22.0
 github.com/ldez/usetesting
 # github.com/leonklingele/grouper v1.1.2
@@ -881,6 +878,9 @@ go-simpler.org/musttag
 # go-simpler.org/sloglint v0.11.0
 ## explicit; go 1.23.0
 go-simpler.org/sloglint
+# go.augendre.info/fatcontext v0.8.0
+## explicit; go 1.23.0
+go.augendre.info/fatcontext/pkg/analyzer
 # go.uber.org/atomic v1.7.0
 ## explicit; go 1.13
 go.uber.org/atomic
@@ -913,6 +913,7 @@ golang.org/x/mod/internal/lazyregexp
 golang.org/x/mod/modfile
 golang.org/x/mod/module
 golang.org/x/mod/semver
+golang.org/x/mod/sumdb/dirhash
 # golang.org/x/sync v0.13.0
 ## explicit; go 1.23.0
 golang.org/x/sync/errgroup
@@ -952,7 +953,6 @@ golang.org/x/text/unicode/norm
 golang.org/x/text/width
 # golang.org/x/tools v0.32.0
 ## explicit; go 1.23.0
-golang.org/x/tools/cmd/goimports
 golang.org/x/tools/go/analysis
 golang.org/x/tools/go/analysis/passes/appends
 golang.org/x/tools/go/analysis/passes/asmdecl
@@ -1297,8 +1297,8 @@ honnef.co/go/tools/stylecheck/st1021
 honnef.co/go/tools/stylecheck/st1022
 honnef.co/go/tools/stylecheck/st1023
 honnef.co/go/tools/unused
-# mvdan.cc/gofumpt v0.7.0
-## explicit; go 1.22
+# mvdan.cc/gofumpt v0.8.0
+## explicit; go 1.23.0
 mvdan.cc/gofumpt/format
 mvdan.cc/gofumpt/internal/govendor/go/doc/comment
 mvdan.cc/gofumpt/internal/govendor/go/format
