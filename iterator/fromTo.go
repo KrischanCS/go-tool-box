@@ -2,13 +2,13 @@ package iterator
 
 import (
 	"iter"
-
-	"golang.org/x/exp/constraints"
 )
 
-// Number is a type constraint that matches all numeric types.
-type Number interface {
-	constraints.Integer | constraints.Float
+// RealNumber is a type constraint that matches all numeric types.
+type RealNumber interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr |
+		~float32 | ~float64
 }
 
 // FromTo creates an iterator returning the values from start to end exclusive
@@ -37,7 +37,7 @@ func FromToInclusive(start, endIncluded int) iter.Seq[int] {
 //   - step == 0
 //   - start < end && step < 0
 //   - start > end && step > 0
-func FromStepTo[T Number](start, step, endExcluded T) iter.Seq[T] {
+func FromStepTo[T RealNumber](start, step, endExcluded T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		v := start
 		for i := 0; v < endExcluded; i, v = i+1, v+step {

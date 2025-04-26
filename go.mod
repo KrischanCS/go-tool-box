@@ -2,10 +2,7 @@ module github.com/KrischanCS/go-tool-box
 
 go 1.24.1
 
-require (
-	github.com/stretchr/testify v1.10.0
-	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0
-)
+require github.com/stretchr/testify v1.10.0
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect
@@ -192,6 +189,7 @@ require (
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
+	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20250210185358-939b2ce775ac // indirect
 	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
