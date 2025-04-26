@@ -28,13 +28,13 @@ func TestMap(t *testing.T) {
 		{
 			name:   "one value",
 			values: Of(1),
-			fn:     func(i int) string { return strconv.Itoa(i) },
+			fn:     strconv.Itoa,
 			want:   []string{"1"},
 		},
 		{
 			name:   "multiple values",
 			values: Of(10, 20, 30, 40, 50),
-			fn:     func(i int) string { return strconv.Itoa(i) },
+			fn:     strconv.Itoa,
 			want:   []string{"10", "20", "30", "40", "50"},
 		},
 	}
