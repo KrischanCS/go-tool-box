@@ -33,14 +33,35 @@ func FromToInclusive(start, endIncluded int) iter.Seq[int] {
 // where the value is increased by step every call and end will not be included,
 // even if it is met exactly.
 //
-// Panics in the following cases:
-//   - step == 0
-//   - start < end && step < 0
-//   - start > end && step > 0
+// If step is 0, it panics.
+//
+// If step is the wrong sign (never reaching end), the sign is inverted.
 func FromStepTo[T RealNumber](start, step, endExcluded T) iter.Seq[T] {
+	switch {
+	case step == 0:
+		panic("step must not be 0")
+	case endExcluded < start:
+		return backwardsFromStepTo(start, step, endExcluded)
+	case step < 0:
+		step = -step
+	}
+
 	return func(yield func(T) bool) {
-		v := start
-		for i := 0; v < endExcluded; i, v = i+1, v+step {
+		for v := start; v < endExcluded; v += step {
+			if !yield(v) {
+				return
+			}
+		}
+	}
+}
+
+func backwardsFromStepTo[T RealNumber](start T, step T, endExcluded T) iter.Seq[T] {
+	if step > 0 {
+		step = -step
+	}
+
+	return func(yield func(T) bool) {
+		for v := start; v > endExcluded; v += step {
 			if !yield(v) {
 				return
 			}
