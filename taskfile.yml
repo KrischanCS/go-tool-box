@@ -3,24 +3,38 @@ version: '3'
 shopt: [ -s globstar ]
 
 tasks:
+  check:
+    cmds:
+      - task vulncheck
+      - task lint
+      - task test
+
+  monitor:
+    cmds:
+      - while true; do task lint && task test; echo 'sleeping...'; sleep 15; echo 'go again!';done
+
   test:
     cmds:
       - go test -race ./...
     sources:
       - ./**/*.go
       - taskfile.yml
-      - .golangci.yml
 
-  check:
+  lint:
     cmds:
-      - go tool govulncheck ./...
       - go tool golangci-lint fmt
       - go tool golangci-lint run --output.tab.path stdout --output.tab.print-linter-name --output.tab.colors
-      - task test
     sources:
       - ./**/*.go
       - taskfile.yml
       - .golangci.yml
+
+  vulncheck:
+    cmds:
+      - go tool govulncheck ./...
+    sources:
+      - ./**/*.go
+      - taskfile.yml
 
   deps:
     cmds:

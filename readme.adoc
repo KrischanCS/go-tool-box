@@ -1,3 +1,11 @@
+// If you read this, you view it somewhere where asciidoc is not supported
+// (e.g. on pkg.go.dev).
+//
+// Github renders this file nicely, so you can view it there: github.com/KrischanCS/go-tool-box
+//
+// I stay with asciidoc for the moment, because this is a playground project for
+// me anyway and I want to check it out as markdown alternative.
+
 == Go Tool Box
 
 This is a collection of packages, which I implemented out of one of the following reasons:
