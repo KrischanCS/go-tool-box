@@ -11,7 +11,7 @@ tasks:
 
   monitor:
     cmds:
-      - while true; do task lint && task test; echo 'sleeping...'; sleep 15; echo 'go again!';done
+      - while true; do (task lint && task test) || true; echo 'sleeping...'; sleep 15; echo 'go again!';done
 
   test:
     cmds:
