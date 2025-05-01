@@ -533,6 +533,67 @@ func BenchmarkReduce_For(b *testing.B) {
 	}
 }
 
+// Unique
+
+//nolint:gocognit
+func BenchmarkUnique(b *testing.B) {
+	tmp := FromTo(from, to)
+
+	slice := make([]int, 0, (breakAt-from)*5)
+
+	for v := range tmp {
+		for range 5 {
+			slice = append(slice, v)
+		}
+	}
+
+	iterator := Of(slice...)
+
+	for b.Loop() {
+		res := 0
+		for v := range Unique(iterator) {
+			res += v*3 - 1
+
+			if v == breakAt {
+				break
+			}
+		}
+	}
+}
+
+//nolint:gocognit
+func BenchmarkUnique_For(b *testing.B) {
+	tmp := FromTo(from, to)
+
+	slice := make([]int, 0, (breakAt-from)*5)
+
+	for v := range tmp {
+		for range 5 {
+			slice = append(slice, v)
+		}
+	}
+
+	for b.Loop() {
+		set := make(map[int]struct{})
+
+		res := 0
+
+		for v := range slice {
+			if _, ok := set[v]; ok {
+				continue
+			}
+
+			res += v*3 - 1
+
+			if v == breakAt {
+				break
+			}
+
+			set[v] = struct{}{}
+		}
+	}
+}
+
 // Complex Iterators
 
 func BenchmarkComplexIterators(b *testing.B) {
