@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/KrischanCS/go-tool-box/must"
-	"github.com/KrischanCS/go-tool-box/optional"
+	"github.com/KrischanCS/go-toolbox/must"
+	"github.com/KrischanCS/go-toolbox/optional"
 
 	"github.com/stretchr/testify/assert"
 )

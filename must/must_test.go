@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/KrischanCS/go-tool-box/must"
+	"github.com/KrischanCS/go-toolbox/must"
 )
 
 func TestValue(t *testing.T) {

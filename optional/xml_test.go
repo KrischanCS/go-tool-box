@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/KrischanCS/go-tool-box/optional"
+	"github.com/KrischanCS/go-toolbox/optional"
 
 	"github.com/stretchr/testify/assert"
 )

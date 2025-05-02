@@ -1,4 +1,4 @@
-module github.com/KrischanCS/go-tool-box
+module github.com/KrischanCS/go-toolbox
 
 go 1.24.1
 

@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/KrischanCS/go-tool-box/result"
+	"github.com/KrischanCS/go-toolbox/result"
 )
 
 func TestOf_success(t *testing.T) {

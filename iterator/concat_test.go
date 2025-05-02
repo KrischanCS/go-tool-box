@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/KrischanCS/go-tool-box/iterator"
+	"github.com/KrischanCS/go-toolbox/iterator"
 )
 
 func TestConcat(t *testing.T) {

@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/KrischanCS/go-tool-box/must"
-	"github.com/KrischanCS/go-tool-box/optional"
+	"github.com/KrischanCS/go-toolbox/must"
+	"github.com/KrischanCS/go-toolbox/optional"
 )
 
 func TestOptional_UnmarshalJson_string(t *testing.T) {

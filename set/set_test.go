@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/KrischanCS/go-tool-box/set"
+	"github.com/KrischanCS/go-toolbox/set"
 )
 
 // point is a simple struct as example for testing.

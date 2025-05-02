@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/KrischanCS/go-tool-box/result"
+	"github.com/KrischanCS/go-toolbox/result"
 )
 
 func ExampleOf() {
