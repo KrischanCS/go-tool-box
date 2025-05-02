@@ -1,4 +1,6 @@
 .task/
+tmp/
+.idea/statistic.xml
 
 ### VisualStudioCode template
 .vscode/*
