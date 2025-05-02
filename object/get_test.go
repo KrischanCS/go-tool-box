@@ -1,6 +1,8 @@
 package object_test
 
 import (
+	"math"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,6 +24,16 @@ var testObject = map[string]any{
 			"deepNestedObject": map[string]any{
 				"deepNestedInt": 5,
 			},
+		},
+	},
+	"sliceWithObjects": []object.Object{
+		{
+			"int":    1,
+			"string": "text1",
+		},
+		{
+			"int":    2,
+			"string": "text2",
 		},
 	},
 }
@@ -104,6 +116,42 @@ func TestGet_any(t *testing.T) {
 			want:   testObject,
 			exists: true,
 		},
+		{
+			name:   "Should return specified element of array if specified in brackets in path",
+			path:   []string{"slice[1]"},
+			want:   2,
+			exists: true,
+		},
+		{
+			name:   "Should return specified element of a nested array",
+			path:   []string{"object", "nestedSlice[2]"},
+			want:   9.81,
+			exists: true,
+		},
+		{
+			name:   "Should return not-ok if specified element of array is out of bounds",
+			path:   []string{"object", "nestedSlice[3]"},
+			want:   nil,
+			exists: false,
+		},
+		{
+			name:   "Should return not-ok if index used on a non-indexable type",
+			path:   []string{"int[0]"},
+			want:   nil,
+			exists: false,
+		},
+		{
+			name:   "Should return not-ok element not exist with an index path",
+			path:   []string{"notExisting[0]"},
+			want:   nil,
+			exists: false,
+		},
+		{
+			name:   "Should return value from an object nested in an array",
+			path:   []string{"sliceWithObjects[1]", "int"},
+			want:   2,
+			exists: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -142,4 +190,20 @@ func TestGet_shouldReturnNotOkIfPathExistButTypeMismatches(t *testing.T) {
 
 	assert.False(t, ok)
 	assert.Equal(t, want, got)
+}
+
+func TestGet_shouldPanicWhenIndexGreaterThanMaxInt(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	index := uint64(math.MaxInt) + 1
+	path := []string{"slice[" + strconv.FormatUint(index, 10) + "]"}
+
+	// Act & Assert
+	assert.PanicsWithValue(t,
+		`Parsing index in object-path: strconv.Atoi: parsing "9223372036854775808": value out of range`,
+		func() {
+			object.Get[int](testObject, path...)
+		},
+	)
 }
