@@ -98,6 +98,12 @@ func TestGet_any(t *testing.T) {
 			want:   nil,
 			exists: false,
 		},
+		{
+			name:   "Should return object itself if path has length 0",
+			path:   []string{},
+			want:   testObject,
+			exists: true,
+		},
 	}
 
 	for _, tt := range tests {

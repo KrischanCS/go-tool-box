@@ -7,12 +7,7 @@ func Get[T any](object Object, path ...string) (value T, ok bool) {
 
 func get[T any](object any, path ...string) (value T, ok bool) {
 	if len(path) == 0 {
-		o, ok := object.(T)
-		if !ok {
-			return value, false
-		}
-
-		return o, true
+		return objectAsT[T](object)
 	}
 
 	next, path := path[0], path[1:]
@@ -32,4 +27,14 @@ func get[T any](object any, path ...string) (value T, ok bool) {
 	}
 
 	return get[T](nextObject, path...)
+}
+
+// objectAsT checks if the object is of type T and returns it.
+func objectAsT[T any](object any) (value T, ok bool) {
+	o, ok := object.(T)
+	if !ok {
+		return value, false
+	}
+
+	return o, true
 }
