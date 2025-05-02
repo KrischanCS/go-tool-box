@@ -23,8 +23,8 @@ type Options struct {
 //
 // The behavior of the pool can be configured with opts, if opts is nil,
 // defaults will be used (see [Options]).
-func NewPool[IN, OUT any](fn func(IN) OUT, inChan <-chan IN, opts *Options) <-chan OUT {
-	opts = initOptions(opts)
+func NewPool[IN, OUT any](fn func(IN) OUT, inChan <-chan IN, options *Options) <-chan OUT {
+	opts := initOptions(options)
 
 	out := make(chan OUT, opts.OutBufferSize)
 
@@ -49,9 +49,9 @@ func NewPool[IN, OUT any](fn func(IN) OUT, inChan <-chan IN, opts *Options) <-ch
 	return out
 }
 
-func initOptions(opts *Options) *Options {
+func initOptions(opts *Options) Options {
 	if opts == nil {
-		return &Options{
+		return Options{
 			PoolSize:      runtime.GOMAXPROCS(0),
 			OutBufferSize: 0,
 		}
@@ -63,5 +63,5 @@ func initOptions(opts *Options) *Options {
 		opts.PoolSize = runtime.GOMAXPROCS(0)
 	}
 
-	return opts
+	return *opts
 }
