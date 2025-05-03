@@ -1,13 +1,29 @@
-package iterator
+package iterator_test
 
 import (
+	"fmt"
 	"iter"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/KrischanCS/go-toolbox/iterator"
 	"github.com/KrischanCS/go-toolbox/tuple"
 )
+
+func ExampleZip() {
+	numbers := iterator.Of(1, 2, 3, 4)
+	letters := iterator.Of("a", "b", "c")
+
+	for pair := range iterator.Zip[int, string](numbers, letters) {
+		fmt.Println(pair.First(), pair.Second())
+	}
+
+	// Output:
+	// 1 a
+	// 2 b
+	// 3 c
+}
 
 //nolint:funlen
 func TestZip(t *testing.T) {
@@ -23,22 +39,22 @@ func TestZip(t *testing.T) {
 	testCases := []testCase[int, string]{
 		{
 			name:       "empty slices",
-			leftInput:  Of[int](),
-			rightInput: Of[string](),
+			leftInput:  iterator.Of[int](),
+			rightInput: iterator.Of[string](),
 			want:       []tuple.Pair[int, string]{},
 		},
 		{
 			name:       "one element",
-			leftInput:  Of(1),
-			rightInput: Of("a"),
+			leftInput:  iterator.Of(1),
+			rightInput: iterator.Of("a"),
 			want: []tuple.Pair[int, string]{
 				tuple.PairOf(1, "a"),
 			},
 		},
 		{
 			name:       "multiple elements",
-			leftInput:  Of(1, 2, 3),
-			rightInput: Of("a", "b", "c"),
+			leftInput:  iterator.Of(1, 2, 3),
+			rightInput: iterator.Of("a", "b", "c"),
 			want: []tuple.Pair[int, string]{
 				tuple.PairOf(1, "a"),
 				tuple.PairOf(2, "b"),
@@ -47,8 +63,8 @@ func TestZip(t *testing.T) {
 		},
 		{
 			name:       "len(leftInput) < len(rightInput)",
-			leftInput:  Of(1, 2, 3),
-			rightInput: Of("a", "b"),
+			leftInput:  iterator.Of(1, 2, 3),
+			rightInput: iterator.Of("a", "b"),
 			want: []tuple.Pair[int, string]{
 				tuple.PairOf(1, "a"),
 				tuple.PairOf(2, "b"),
@@ -56,8 +72,8 @@ func TestZip(t *testing.T) {
 		},
 		{
 			name:       "len(leftInput) > len(rightInput)",
-			leftInput:  Of(1, 2),
-			rightInput: Of("a", "b", "c"),
+			leftInput:  iterator.Of(1, 2),
+			rightInput: iterator.Of("a", "b", "c"),
 			want: []tuple.Pair[int, string]{
 				tuple.PairOf(1, "a"),
 				tuple.PairOf(2, "b"),
@@ -71,7 +87,7 @@ func TestZip(t *testing.T) {
 			got := make([]tuple.Pair[int, string], 0, len(tc.want))
 
 			// Act
-			for p := range Zip(tc.leftInput, tc.rightInput) {
+			for p := range iterator.Zip(tc.leftInput, tc.rightInput) {
 				got = append(got, p)
 			}
 
@@ -85,16 +101,16 @@ func TestZip_withBreak(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	l := Of(1, 2, 3, 4, 5, 6)
+	l := iterator.Of(1, 2, 3, 4, 5, 6)
 
-	r := Of("a", "b", "c", "d", "e", "f")
+	r := iterator.Of("a", "b", "c", "d", "e", "f")
 
 	got := make([]tuple.Pair[int, string], 0, 2)
 
 	stop := tuple.PairOf[int, string](3, "c")
 
 	// Act
-	for e := range Zip(l, r) {
+	for e := range iterator.Zip(l, r) {
 		if e == stop {
 			break
 		}

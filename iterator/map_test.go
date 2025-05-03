@@ -1,12 +1,28 @@
-package iterator
+package iterator_test
 
 import (
+	"fmt"
 	"iter"
 	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/iterator"
 )
+
+func ExampleMap() {
+	i := iterator.Of(2, 4, 6)
+
+	for squared := range iterator.Map(i, func(i int) int { return i * i }) {
+		fmt.Println(squared)
+	}
+
+	// Output:
+	// 4
+	// 16
+	// 36
+}
 
 func TestMap(t *testing.T) {
 	t.Parallel()
@@ -21,19 +37,19 @@ func TestMap(t *testing.T) {
 	testCases := []testCase[int, string]{
 		{
 			name:   "empty slice",
-			values: Of[int](),
+			values: iterator.Of[int](),
 			fn:     func(i int) string { return string(rune(i + 64)) },
 			want:   []string{},
 		},
 		{
 			name:   "one value",
-			values: Of(1),
+			values: iterator.Of(1),
 			fn:     strconv.Itoa,
 			want:   []string{"1"},
 		},
 		{
 			name:   "multiple values",
-			values: Of(10, 20, 30, 40, 50),
+			values: iterator.Of(10, 20, 30, 40, 50),
 			fn:     strconv.Itoa,
 			want:   []string{"10", "20", "30", "40", "50"},
 		},
@@ -45,7 +61,7 @@ func TestMap(t *testing.T) {
 			got := make([]string, 0, len(tc.want))
 
 			// Act
-			for v := range Map(tc.values, tc.fn) {
+			for v := range iterator.Map(tc.values, tc.fn) {
 				got = append(got, v)
 			}
 
@@ -59,12 +75,12 @@ func TestMap_withBreak(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	values := Of(1, 2, 3, 4, 5)
+	values := iterator.Of(1, 2, 3, 4, 5)
 	fn := func(i int) int { return i * 2 }
 	got := make([]int, 0, 3)
 
 	// Act
-	for v := range Map(values, fn) {
+	for v := range iterator.Map(values, fn) {
 		if v > 6 {
 			break
 		}

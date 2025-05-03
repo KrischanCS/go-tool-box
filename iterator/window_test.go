@@ -1,12 +1,42 @@
-package iterator
+package iterator_test
 
 import (
+	"fmt"
 	"iter"
 	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/iterator"
 )
+
+func ExampleFixedWindow() {
+	i := iterator.Of(1, 2, 3, 4, 5)
+
+	for group := range iterator.FixedWindow(i, 2) {
+		fmt.Println(group)
+	}
+
+	// Output:
+	// [1 2]
+	// [3 4]
+	// [5]
+}
+
+func ExampleSlidingWindow() {
+	i := iterator.Of(1, 2, 3, 4, 5)
+
+	for group := range iterator.SlidingWindow(i, 2) {
+		fmt.Println(group)
+	}
+
+	// Output:
+	// [1 2]
+	// [2 3]
+	// [3 4]
+	// [4 5]
+}
 
 //nolint:funlen
 func TestSlidingWindow(t *testing.T) {
@@ -22,37 +52,37 @@ func TestSlidingWindow(t *testing.T) {
 	testCases := []testCase[int]{
 		{
 			name:       "empty slice",
-			values:     Of[int](),
+			values:     iterator.Of[int](),
 			windowSize: 0,
 			want:       [][]int{},
 		},
 		{
 			name:       "one element, windowSize = 0",
-			values:     Of(1),
+			values:     iterator.Of(1),
 			windowSize: 0,
 			want:       [][]int{},
 		},
 		{
 			name:       "windowSize < 0",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: -1,
 			want:       [][]int{},
 		},
 		{
 			name:       "one element, windowSize = 1",
-			values:     Of(1),
+			values:     iterator.Of(1),
 			windowSize: 1,
 			want:       [][]int{{1}},
 		},
 		{
 			name:       "multiple elements, windowSize = 1",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 1,
 			want:       [][]int{{1}, {2}, {3}, {4}, {5}, {6}},
 		},
 		{
 			name:       "multiple elements, windowSize = 2",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 2,
 			want: [][]int{
 				{1, 2},
@@ -64,7 +94,7 @@ func TestSlidingWindow(t *testing.T) {
 		},
 		{
 			name:       "multiple elements, windowSize = 3",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 3,
 			want: [][]int{
 				{1, 2, 3},
@@ -75,13 +105,13 @@ func TestSlidingWindow(t *testing.T) {
 		},
 		{
 			name:       "multiple elements, windowSize = len(values)",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 6,
 			want:       [][]int{{1, 2, 3, 4, 5, 6}},
 		},
 		{
 			name:       "multiple elements, windowSize > len(values)",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 7,
 			want:       [][]int{{1, 2, 3, 4, 5, 6}},
 		},
@@ -93,7 +123,7 @@ func TestSlidingWindow(t *testing.T) {
 			got := make([][]int, 0, len(tc.want))
 
 			// Act
-			for group := range SlidingWindow(tc.values, tc.windowSize) {
+			for group := range iterator.SlidingWindow(tc.values, tc.windowSize) {
 				got = append(got, slices.Clone(group))
 			}
 
@@ -117,55 +147,55 @@ func TestFixedWindow(t *testing.T) {
 	testCases := []testCase[int]{
 		{
 			name:       "empty slice",
-			values:     Of[int](),
+			values:     iterator.Of[int](),
 			windowSize: 0,
 			want:       [][]int{},
 		},
 		{
 			name:       "one element, windowSize = 0",
-			values:     Of(1),
+			values:     iterator.Of(1),
 			windowSize: 0,
 			want:       [][]int{},
 		},
 		{
 			name:       "windowSize < 0",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: -1,
 			want:       [][]int{},
 		},
 		{
 			name:       "one element, windowSize = 1",
-			values:     Of(1),
+			values:     iterator.Of(1),
 			windowSize: 1,
 			want:       [][]int{{1}},
 		},
 		{
 			name:       "multiple elements, windowSize = 1",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 1,
 			want:       [][]int{{1}, {2}, {3}, {4}, {5}, {6}},
 		},
 		{
 			name:       "multiple elements, windowSize = 2",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 2,
 			want:       [][]int{{1, 2}, {3, 4}, {5, 6}},
 		},
 		{
 			name:       "multiple elements, windowSize = 3",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 3,
 			want:       [][]int{{1, 2, 3}, {4, 5, 6}},
 		},
 		{
 			name:       "multiple elements, windowSize = len(values)",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 6,
 			want:       [][]int{{1, 2, 3, 4, 5, 6}},
 		},
 		{
 			name:       "multiple elements, windowSize > len(values)",
-			values:     Of(1, 2, 3, 4, 5, 6),
+			values:     iterator.Of(1, 2, 3, 4, 5, 6),
 			windowSize: 7,
 			want:       [][]int{{1, 2, 3, 4, 5, 6}},
 		},
@@ -177,7 +207,7 @@ func TestFixedWindow(t *testing.T) {
 			got := make([][]int, 0, len(tc.want))
 
 			// Act
-			for ts := range FixedWindow(tc.values, tc.windowSize) {
+			for ts := range iterator.FixedWindow(tc.values, tc.windowSize) {
 				got = append(got, slices.Clone(ts))
 			}
 
@@ -191,13 +221,13 @@ func TestFixedWindow_withBreak(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	values := Of(1, 2, 3, 4, 5, 6)
+	values := iterator.Of(1, 2, 3, 4, 5, 6)
 	windowSize := 2
 
 	got := make([][]int, 0, windowSize)
 
 	// Act
-	for group := range FixedWindow(values, windowSize) {
+	for group := range iterator.FixedWindow(values, windowSize) {
 		if slices.Equal(group, []int{5, 6}) {
 			break
 		}
@@ -214,15 +244,14 @@ func TestFixedWindow2Window_withBreak(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	slice := []int{1, 2, 3, 4, 5, 6}
-	values := PickRight(slices.All(slice))
+	values := iterator.Of(1, 2, 3, 4, 5, 6)
 
 	windowSize := 2
 
 	got := make([][]int, 0, windowSize)
 
 	// Act
-	for group := range FixedWindow(values, windowSize) {
+	for group := range iterator.FixedWindow(values, windowSize) {
 		if slices.Equal(group, []int{3, 4}) {
 			break
 		}
@@ -239,15 +268,14 @@ func TestSlidingWindow_withBreak(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	slice := []int{1, 2, 3, 4, 5, 6}
-	values := PickRight(slices.All(slice))
+	values := iterator.Of(1, 2, 3, 4, 5, 6)
 
 	windowSize := 2
 
 	got := make([][]int, 0, windowSize)
 
 	// Act
-	for group := range SlidingWindow(values, windowSize) {
+	for group := range iterator.SlidingWindow(values, windowSize) {
 		if slices.Equal(group, []int{4, 5}) {
 			break
 		}

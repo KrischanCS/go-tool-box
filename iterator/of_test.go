@@ -1,10 +1,28 @@
-package iterator
+package iterator_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/iterator"
 )
+
+func ExampleOf() {
+	s := iterator.Of(1, 2, 3, 4, 5)
+
+	for v := range s {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// 1
+	// 2
+	// 3
+	// 4
+	// 5
+}
 
 func TestOf(t *testing.T) {
 	t.Parallel()
@@ -13,7 +31,7 @@ func TestOf(t *testing.T) {
 	got := make([]string, 0, 3)
 
 	// Act
-	iter := Of[string]("a", "b", "c")
+	iter := iterator.Of[string]("a", "b", "c")
 	for v := range iter {
 		got = append(got, v)
 	}
@@ -30,7 +48,7 @@ func TestOf_withBreak(t *testing.T) {
 	got := make([]string, 0, 1)
 
 	// Act
-	iter := Of[string]("a", "b", "c")
+	iter := iterator.Of[string]("a", "b", "c")
 	for v := range iter {
 		got = append(got, v)
 		break

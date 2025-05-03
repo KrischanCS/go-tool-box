@@ -1,31 +1,54 @@
-package iterator
+package iterator_test
 
 import (
+	"fmt"
 	"maps"
 	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/KrischanCS/go-toolbox/iterator"
 	"github.com/KrischanCS/go-toolbox/tuple"
 )
 
-func TestPickRight(t *testing.T) {
-	t.Parallel()
+func ExamplePickLeft() {
+	i := slices.All([]string{"a", "b", "c"})
 
-	// Arrange
-	s := []int{1, 2, 3, 4, 5, 6}
-	slicesIter := slices.All(s)
-
-	got := make([]int, 0, len(s))
-
-	// Act
-	for e := range PickRight(slicesIter) {
-		got = append(got, e)
+	for i := range iterator.PickLeft(i) {
+		fmt.Println(i)
 	}
 
-	// Assert
-	assert.Equal(t, s, got)
+	// Output:
+	// 0
+	// 1
+	// 2
+}
+
+func ExamplePickRight() {
+	i := slices.All([]string{"a", "b", "c"})
+
+	for i := range iterator.PickRight(i) {
+		fmt.Println(i)
+	}
+
+	// Output:
+	// a
+	// b
+	// c
+}
+
+func ExampleCombine() {
+	i := slices.All([]string{"a", "b", "c"})
+
+	for i := range iterator.Combine(i) {
+		fmt.Println(i)
+	}
+
+	// Output:
+	// (Pair[int, string]: [0; a])
+	// (Pair[int, string]: [1; b])
+	// (Pair[int, string]: [2; c])
 }
 
 func TestPickLeft(t *testing.T) {
@@ -38,13 +61,31 @@ func TestPickLeft(t *testing.T) {
 	got := make([]int, 0, len(s))
 
 	// Act
-	for e := range PickLeft(slicesIter) {
+	for e := range iterator.PickLeft(slicesIter) {
 		got = append(got, e)
 	}
 
 	// Assert
 	want := []int{0, 1, 2, 3, 4, 5}
 	assert.Equal(t, want, got)
+}
+
+func TestPickRight(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := []int{1, 2, 3, 4, 5, 6}
+	slicesIter := slices.All(s)
+
+	got := make([]int, 0, len(s))
+
+	// Act
+	for e := range iterator.PickRight(slicesIter) {
+		got = append(got, e)
+	}
+
+	// Assert
+	assert.Equal(t, s, got)
 }
 
 func TestCombine(t *testing.T) {
@@ -62,7 +103,7 @@ func TestCombine(t *testing.T) {
 	got := make([]tuple.Pair[int, string], 0, 3)
 
 	// Act
-	for e := range Combine(mapIter) {
+	for e := range iterator.Combine(mapIter) {
 		got = append(got, e)
 	}
 
@@ -76,28 +117,6 @@ func TestCombine(t *testing.T) {
 	assert.ElementsMatch(t, want, got)
 }
 
-func TestPickRight_withBreak(t *testing.T) {
-	t.Parallel()
-
-	// Arrange
-	s := []int{1, 2, 3, 4, 5, 6}
-	slicesIter := slices.All(s)
-
-	got := make([]int, 0, len(s))
-
-	// Act
-	for e := range PickRight(slicesIter) {
-		got = append(got, e)
-
-		if e == 3 {
-			break
-		}
-	}
-
-	// Assert
-	assert.Equal(t, s[:3], got)
-}
-
 func TestPickLeft_withBreak(t *testing.T) {
 	t.Parallel()
 
@@ -108,7 +127,7 @@ func TestPickLeft_withBreak(t *testing.T) {
 	got := make([]int, 0, len(s))
 
 	// Act
-	for e := range PickLeft(slicesIter) {
+	for e := range iterator.PickLeft(slicesIter) {
 		got = append(got, e)
 
 		if e == 2 {
@@ -119,6 +138,28 @@ func TestPickLeft_withBreak(t *testing.T) {
 	// Assert
 	want := []int{0, 1, 2}
 	assert.Equal(t, want, got)
+}
+
+func TestPickRight_withBreak(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := []int{1, 2, 3, 4, 5, 6}
+	slicesIter := slices.All(s)
+
+	got := make([]int, 0, len(s))
+
+	// Act
+	for e := range iterator.PickRight(slicesIter) {
+		got = append(got, e)
+
+		if e == 3 {
+			break
+		}
+	}
+
+	// Assert
+	assert.Equal(t, s[:3], got)
 }
 
 func TestCombine_withBreak(t *testing.T) {
@@ -136,7 +177,7 @@ func TestCombine_withBreak(t *testing.T) {
 
 	// Act
 	var got string
-	for e := range Combine(mapIter) {
+	for e := range iterator.Combine(mapIter) {
 		got = e.Second()
 
 		if e.First() == 2 {

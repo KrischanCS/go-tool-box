@@ -1,6 +1,7 @@
 package iterator_test
 
 import (
+	"fmt"
 	"iter"
 	"testing"
 
@@ -8,6 +9,24 @@ import (
 
 	"github.com/KrischanCS/go-toolbox/iterator"
 )
+
+func ExampleConcat() {
+	a := iterator.Of(1, 2, 3)
+	b := iterator.Of(4)
+	c := iterator.Of(5, 6)
+
+	for v := range iterator.Concat(a, b, c) {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// 1
+	// 2
+	// 3
+	// 4
+	// 5
+	// 6
+}
 
 func TestConcat(t *testing.T) {
 	t.Parallel()

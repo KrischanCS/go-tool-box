@@ -1,23 +1,38 @@
-package iterator
+package iterator_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/KrischanCS/go-toolbox/iterator"
 	"github.com/KrischanCS/go-toolbox/tuple"
 )
+
+func ExampleEnumerate() {
+	it := iterator.Of("a", "b", "c")
+
+	for i, v := range iterator.Enumerate(it) {
+		fmt.Printf("%d: %s\n", i, v)
+	}
+
+	// Output:
+	// 0: a
+	// 1: b
+	// 2: c
+}
 
 func TestEnumerate(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
 
-	input := Of("a", "b", "c", "d", "e")
+	input := iterator.Of("a", "b", "c", "d", "e")
 	got := make([]tuple.Pair[int, string], 0, 5)
 
 	// Act
-	for i, v := range Enumerate(input) {
+	for i, v := range iterator.Enumerate(input) {
 		got = append(got, tuple.PairOf[int, string](i, v))
 	}
 
@@ -38,11 +53,11 @@ func TestEnumerate_shouldStopOnBreak(t *testing.T) {
 
 	// Arrange
 
-	input := Of("a", "b", "c", "d", "e")
+	input := iterator.Of("a", "b", "c", "d", "e")
 	got := make([]tuple.Pair[int, string], 0, 3)
 
 	// Act
-	for i, v := range Enumerate(input) {
+	for i, v := range iterator.Enumerate(input) {
 		if i == 3 {
 			break
 		}

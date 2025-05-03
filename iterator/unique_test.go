@@ -1,6 +1,7 @@
 package iterator_test
 
 import (
+	"fmt"
 	"iter"
 	"testing"
 
@@ -8,6 +9,19 @@ import (
 
 	"github.com/KrischanCS/go-toolbox/iterator"
 )
+
+func ExampleUnique() {
+	i := iterator.Of(1, 1, 2, 1, 2, 3, 3, 1)
+
+	for v := range iterator.Unique(i) {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// 1
+	// 2
+	// 3
+}
 
 func TestUnique(t *testing.T) {
 	t.Parallel()

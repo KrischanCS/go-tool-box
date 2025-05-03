@@ -1,18 +1,38 @@
-package iterator
+package iterator_test
 
 import (
-	"slices"
+	"fmt"
+	"iter"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/iterator"
 )
+
+func isEven(i int) bool {
+	return i%2 == 0
+}
+
+func ExampleFilter() {
+	s := iterator.Of(1, 2, 3, 4, 5, 6)
+
+	for e := range iterator.Filter(s, isEven) {
+		fmt.Println(e)
+	}
+
+	// Output:
+	// 2
+	// 4
+	// 6
+}
 
 func TestFilter(t *testing.T) {
 	t.Parallel()
 
 	type testCase[T any] struct {
 		name      string
-		input     []T
+		input     iter.Seq[T]
 		condition func(T) bool
 		want      []T
 	}
@@ -20,34 +40,31 @@ func TestFilter(t *testing.T) {
 	testCases := []testCase[int]{
 		{
 			name:      "empty slice",
-			input:     []int{},
+			input:     iterator.Of[int](),
 			condition: nil,
 			want:      []int{},
 		},
 		{
 			name:  "all elements pass",
-			input: []int{1, 2, 3, 4, 5},
+			input: iterator.Of(1, 2, 3, 4, 5),
 			condition: func(_ int) bool {
 				return true
 			},
-
 			want: []int{1, 2, 3, 4, 5},
 		},
 		{
 			name:  "no elements pass",
-			input: []int{1, 2, 3, 4, 5},
+			input: iterator.Of(1, 2, 3, 4, 5),
 			condition: func(_ int) bool {
 				return false
 			},
 			want: []int{},
 		},
 		{
-			name:  "some elements pass",
-			input: []int{1, 2, 3, 4, 5},
-			condition: func(e int) bool {
-				return e%2 == 0
-			},
-			want: []int{2, 4},
+			name:      "some elements pass",
+			input:     iterator.Of(1, 2, 3, 4, 5),
+			condition: isEven,
+			want:      []int{2, 4},
 		},
 	}
 
@@ -57,7 +74,7 @@ func TestFilter(t *testing.T) {
 			got := make([]int, 0, len(tc.want))
 
 			// Act
-			for e := range Filter(PickRight(slices.All(tc.input)), tc.condition) {
+			for e := range iterator.Filter(tc.input, tc.condition) {
 				got = append(got, e)
 			}
 
@@ -71,11 +88,11 @@ func TestFilter_withBreak(t *testing.T) {
 	t.Parallel()
 
 	// Arrange
-	s := []int{1, 2, 3, 4, 5, 6}
-	got := make([]int, 0, len(s))
+	i := iterator.Of(1, 2, 3, 4, 5, 6)
+	got := make([]int, 0, 6)
 
 	// Act
-	for e := range Filter(PickRight(slices.All(s)), func(_ int) bool {
+	for e := range iterator.Filter(i, func(_ int) bool {
 		return true
 	}) {
 		if e == 3 {
