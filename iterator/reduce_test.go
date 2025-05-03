@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/KrischanCS/go-toolbox/iterator"
+	"github.com/KrischanCS/go-toolbox/iterator/reducer"
 )
 
 func ExampleReduce() {
@@ -15,9 +16,7 @@ func ExampleReduce() {
 
 	var sum int
 
-	iterator.Reduce(i, &sum, func(acc *int, v int) {
-		*acc += v
-	})
+	iterator.Reduce(i, &sum, reducer.Sum)
 
 	fmt.Println(sum)
 
@@ -41,10 +40,8 @@ func TestReduce(t *testing.T) {
 			name:        "Should not modify the accumulator if the input is empty",
 			input:       iterator.Of[int](),
 			accumulator: 0,
-			fn: func(acc *int, v int) {
-				*acc += v
-			},
-			want: 0,
+			fn:          reducer.Sum[int],
+			want:        0,
 		},
 		{
 			name:        "Should not modify the accumulator if the fn does nothing",
@@ -57,47 +54,37 @@ func TestReduce(t *testing.T) {
 			name:        "Should set acc to value if the input is one value, fn is the sum function and the accumulator is 0",
 			input:       iterator.Of(1),
 			accumulator: 0,
-			fn: func(acc *int, v int) {
-				*acc += v
-			},
-			want: 1,
+			fn:          reducer.Sum[int],
+			want:        1,
 		},
 		{
 			name:        "Should set the accumulator to the sum of all values in input",
 			input:       iterator.Of(1, 2, 3, 4, 5),
 			accumulator: 0,
-			fn: func(acc *int, v int) {
-				*acc += v
-			},
-			want: 15,
+			fn:          reducer.Sum[int],
+			want:        15,
 		},
 		{
 			name: "Should set the accumulator to the sum of all values" +
 				" plus initial values if accumulator has an initial value",
 			input:       iterator.Of(1, 2, 3, 4, 5),
 			accumulator: 5,
-			fn: func(acc *int, v int) {
-				*acc += v
-			},
-			want: 20,
+			fn:          reducer.Sum[int],
+			want:        20,
 		},
 		{
 			name:        "Should set the accumulator to the product of all values in input",
 			input:       iterator.Of(1, 2, 3, 4, 5),
 			accumulator: 1,
-			fn: func(acc *int, v int) {
-				*acc *= v
-			},
-			want: 120,
+			fn:          reducer.Product[int],
+			want:        120,
 		},
 		{
 			name:        "Should not modify the accumulator if it's initial value is the neutral element for fn",
 			input:       iterator.Of(1, 2, 3, 4, 5),
 			accumulator: 0,
-			fn: func(acc *int, v int) {
-				*acc *= v
-			},
-			want: 0,
+			fn:          reducer.Product[int],
+			want:        0,
 		},
 	}
 

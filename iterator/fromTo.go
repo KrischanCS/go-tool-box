@@ -2,14 +2,9 @@ package iterator
 
 import (
 	"iter"
-)
 
-// RealNumber is a type constraint that matches all numeric types.
-type RealNumber interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64 |
-		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr |
-		~float32 | ~float64
-}
+	"github.com/KrischanCS/go-toolbox/iterator/constraints"
+)
 
 // FromTo creates an iterator returning the values from start to end exclusive
 // (Half open range).
@@ -36,7 +31,7 @@ func FromToInclusive(start, endIncluded int) iter.Seq[int] {
 // If step is 0, it panics.
 //
 // If step is the wrong sign (never reaching end), the sign is inverted.
-func FromStepTo[T RealNumber](start, step, endExcluded T) iter.Seq[T] {
+func FromStepTo[T constraints.RealNumber](start, step, endExcluded T) iter.Seq[T] {
 	switch {
 	case step == 0:
 		panic("step must not be 0")
@@ -55,7 +50,7 @@ func FromStepTo[T RealNumber](start, step, endExcluded T) iter.Seq[T] {
 	}
 }
 
-func backwardsFromStepTo[T RealNumber](start T, step T, endExcluded T) iter.Seq[T] {
+func backwardsFromStepTo[T constraints.RealNumber](start T, step T, endExcluded T) iter.Seq[T] {
 	if step > 0 {
 		step = -step
 	}
