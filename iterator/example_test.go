@@ -3,6 +3,8 @@ package iterator
 import (
 	"fmt"
 	"slices"
+
+	"github.com/KrischanCS/go-toolbox/tuple"
 )
 
 func ExampleZip() {
@@ -13,13 +15,13 @@ func ExampleZip() {
 		PickRight(slices.All(numbers)),
 		PickRight(slices.All(letters)))
 
-	filtered := Filter(pairs, func(p Pair[int, string]) bool {
-		return p.Left%2 == 0
+	filtered := Filter(pairs, func(p tuple.Pair[int, string]) bool {
+		return p.First()%2 == 0
 	})
 
 	for s := range SlidingWindow(filtered, 5) {
 		for _, p := range s {
-			fmt.Println(p.Left, p.Right)
+			fmt.Println(p.First(), p.Second())
 		}
 	}
 

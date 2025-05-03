@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/tuple"
 )
 
 //nolint:funlen
@@ -15,7 +17,7 @@ func TestZip(t *testing.T) {
 		name       string
 		leftInput  iter.Seq[L]
 		rightInput iter.Seq[R]
-		want       []Pair[L, R]
+		want       []tuple.Pair[L, R]
 	}
 
 	testCases := []testCase[int, string]{
@@ -23,42 +25,42 @@ func TestZip(t *testing.T) {
 			name:       "empty slices",
 			leftInput:  Of[int](),
 			rightInput: Of[string](),
-			want:       []Pair[int, string]{},
+			want:       []tuple.Pair[int, string]{},
 		},
 		{
 			name:       "one element",
 			leftInput:  Of(1),
 			rightInput: Of("a"),
-			want: []Pair[int, string]{
-				{1, "a"},
+			want: []tuple.Pair[int, string]{
+				tuple.PairOf(1, "a"),
 			},
 		},
 		{
 			name:       "multiple elements",
 			leftInput:  Of(1, 2, 3),
 			rightInput: Of("a", "b", "c"),
-			want: []Pair[int, string]{
-				{1, "a"},
-				{2, "b"},
-				{3, "c"},
+			want: []tuple.Pair[int, string]{
+				tuple.PairOf(1, "a"),
+				tuple.PairOf(2, "b"),
+				tuple.PairOf(3, "c"),
 			},
 		},
 		{
 			name:       "len(leftInput) < len(rightInput)",
 			leftInput:  Of(1, 2, 3),
 			rightInput: Of("a", "b"),
-			want: []Pair[int, string]{
-				{1, "a"},
-				{2, "b"},
+			want: []tuple.Pair[int, string]{
+				tuple.PairOf(1, "a"),
+				tuple.PairOf(2, "b"),
 			},
 		},
 		{
 			name:       "len(leftInput) > len(rightInput)",
 			leftInput:  Of(1, 2),
 			rightInput: Of("a", "b", "c"),
-			want: []Pair[int, string]{
-				{1, "a"},
-				{2, "b"},
+			want: []tuple.Pair[int, string]{
+				tuple.PairOf(1, "a"),
+				tuple.PairOf(2, "b"),
 			},
 		},
 	}
@@ -66,7 +68,7 @@ func TestZip(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Arrange
-			got := make([]Pair[int, string], 0, len(tc.want))
+			got := make([]tuple.Pair[int, string], 0, len(tc.want))
 
 			// Act
 			for p := range Zip(tc.leftInput, tc.rightInput) {
@@ -87,9 +89,9 @@ func TestZip_withBreak(t *testing.T) {
 
 	r := Of("a", "b", "c", "d", "e", "f")
 
-	got := make([]Pair[int, string], 0, 2)
+	got := make([]tuple.Pair[int, string], 0, 2)
 
-	stop := Pair[int, string]{3, "c"}
+	stop := tuple.PairOf[int, string](3, "c")
 
 	// Act
 	for e := range Zip(l, r) {
@@ -101,9 +103,9 @@ func TestZip_withBreak(t *testing.T) {
 	}
 
 	// Assert
-	want := []Pair[int, string]{
-		{1, "a"},
-		{2, "b"},
+	want := []tuple.Pair[int, string]{
+		tuple.PairOf(1, "a"),
+		tuple.PairOf(2, "b"),
 	}
 	assert.Equal(t, want, got)
 }

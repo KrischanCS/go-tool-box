@@ -6,6 +6,8 @@ import (
 	"slices"
 	"strconv"
 	"testing"
+
+	"github.com/KrischanCS/go-toolbox/tuple"
 )
 
 // This benchmarks compares the performance between the iterators and the
@@ -289,10 +291,10 @@ func BenchmarkCombine(b *testing.B) {
 		intRes := 0
 
 		for pair := range Combine(values) {
-			strRes += pair.Left
-			intRes += pair.Right*3 - 1
+			strRes += pair.First()
+			intRes += pair.Second()*3 - 1
 
-			if pair.Right == breakAt {
+			if pair.Second() == breakAt {
 				break
 			}
 		}
@@ -427,10 +429,10 @@ func BenchmarkZip(b *testing.B) {
 		strRes := ""
 
 		for pair := range Zip[int, string](iterator1, iterator2) {
-			intRes += pair.Left*3 - 1
-			strRes += pair.Right
+			intRes += pair.First()*3 - 1
+			strRes += pair.Second()
 
-			if pair.Left == breakAt {
+			if pair.First() == breakAt {
 				break
 			}
 		}
@@ -605,7 +607,7 @@ func BenchmarkComplexIterators(b *testing.B) {
 		letters = append(letters, string(byte(i%26+'a')))
 	}
 
-	var res []Pair[int, string]
+	var res []tuple.Pair[int, string]
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -616,8 +618,8 @@ func BenchmarkComplexIterators(b *testing.B) {
 			PickRight(slices.All(letters)),
 		)
 
-		filtered := Filter(pairs, func(p Pair[int, string]) bool {
-			return p.Left%2 == 0
+		filtered := Filter(pairs, func(p tuple.Pair[int, string]) bool {
+			return p.First()%2 == 0
 		})
 
 		for s := range SlidingWindow(filtered, 5) {
@@ -638,7 +640,7 @@ func BenchmarkComplexIteration_For(b *testing.B) {
 		letters = append(letters, string(byte(i%26+'a')))
 	}
 
-	var res []Pair[int, string]
+	var res []tuple.Pair[int, string]
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -646,14 +648,14 @@ func BenchmarkComplexIteration_For(b *testing.B) {
 	for range b.N {
 		n := 5
 
-		state := make([]Pair[int, string], 0, n)
+		state := make([]tuple.Pair[int, string], 0, n)
 
 		for i, number := range numbers {
 			if number%2 == 0 {
 				continue
 			}
 
-			current := Pair[int, string]{number, letters[i]}
+			current := tuple.PairOf[int, string](number, letters[i])
 
 			switch {
 			case len(state) < n-1:
@@ -706,17 +708,17 @@ func BenchmarkComplexIteratorsAndWorkload(b *testing.B) {
 			PickRight(slices.All(letters)),
 		)
 
-		filtered := Filter(pairs, func(p Pair[int, string]) bool {
-			return p.Left%2 == 0
+		filtered := Filter(pairs, func(p tuple.Pair[int, string]) bool {
+			return p.First()%2 == 0
 		})
 
 		for s := range SlidingWindow(filtered, 5) {
 			t := []intString{
-				{s[0].Left, s[0].Right},
-				{s[1].Left, s[1].Right},
-				{s[2].Left, s[2].Right},
-				{s[3].Left, s[3].Right},
-				{s[4].Left, s[4].Right},
+				{s[0].First(), s[0].Second()},
+				{s[1].First(), s[1].Second()},
+				{s[2].First(), s[2].Second()},
+				{s[3].First(), s[3].Second()},
+				{s[4].First(), s[4].Second()},
 			}
 
 			v, err := json.Marshal(t)
@@ -762,14 +764,14 @@ func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
 		res = res[:0]
 
 		n := 5
-		state := make([]Pair[int, string], 0, n)
+		state := make([]tuple.Pair[int, string], 0, n)
 
 		for i, number := range numbers {
 			if number%2 != 0 {
 				continue
 			}
 
-			current := Pair[int, string]{number, letters[i]}
+			current := tuple.PairOf[int, string](number, letters[i])
 
 			switch {
 			case len(state) < n-1:
@@ -786,11 +788,11 @@ func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
 			}
 
 			t := []intString{
-				{state[0].Left, state[0].Right},
-				{state[1].Left, state[1].Right},
-				{state[2].Left, state[2].Right},
-				{state[3].Left, state[3].Right},
-				{state[4].Left, state[4].Right},
+				{state[0].First(), state[0].Second()},
+				{state[1].First(), state[1].Second()},
+				{state[2].First(), state[2].Second()},
+				{state[3].First(), state[3].Second()},
+				{state[4].First(), state[4].Second()},
 			}
 
 			v, err := json.Marshal(t)

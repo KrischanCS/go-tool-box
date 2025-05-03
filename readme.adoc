@@ -153,3 +153,7 @@ for i, v := range slice1 {
 Object provides utility methods to work with values where the underlying type is 'map[string]any'.
 
 This can be handy when working with unknown or dynamic json/yaml/toml/… data.
+
+=== Tuple
+
+Tuple provides simple types for combining values.

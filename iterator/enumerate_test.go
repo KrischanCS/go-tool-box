@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/tuple"
 )
 
 func TestEnumerate(t *testing.T) {
@@ -12,20 +14,20 @@ func TestEnumerate(t *testing.T) {
 	// Arrange
 
 	input := Of("a", "b", "c", "d", "e")
-	got := make([]Pair[int, string], 0, 5)
+	got := make([]tuple.Pair[int, string], 0, 5)
 
 	// Act
 	for i, v := range Enumerate(input) {
-		got = append(got, Pair[int, string]{i, v})
+		got = append(got, tuple.PairOf[int, string](i, v))
 	}
 
 	// Assert
-	want := []Pair[int, string]{
-		{0, "a"},
-		{1, "b"},
-		{2, "c"},
-		{3, "d"},
-		{4, "e"},
+	want := []tuple.Pair[int, string]{
+		tuple.PairOf(0, "a"),
+		tuple.PairOf(1, "b"),
+		tuple.PairOf(2, "c"),
+		tuple.PairOf(3, "d"),
+		tuple.PairOf(4, "e"),
 	}
 
 	assert.Equal(t, want, got)
@@ -37,7 +39,7 @@ func TestEnumerate_shouldStopOnBreak(t *testing.T) {
 	// Arrange
 
 	input := Of("a", "b", "c", "d", "e")
-	got := make([]Pair[int, string], 0, 3)
+	got := make([]tuple.Pair[int, string], 0, 3)
 
 	// Act
 	for i, v := range Enumerate(input) {
@@ -45,14 +47,14 @@ func TestEnumerate_shouldStopOnBreak(t *testing.T) {
 			break
 		}
 
-		got = append(got, Pair[int, string]{i, v})
+		got = append(got, tuple.PairOf[int, string](i, v))
 	}
 
 	// Assert
-	want := []Pair[int, string]{
-		{0, "a"},
-		{1, "b"},
-		{2, "c"},
+	want := []tuple.Pair[int, string]{
+		tuple.PairOf(0, "a"),
+		tuple.PairOf(1, "b"),
+		tuple.PairOf(2, "c"),
 	}
 
 	assert.Equal(t, want, got)

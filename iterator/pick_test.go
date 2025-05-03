@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/KrischanCS/go-toolbox/tuple"
 )
 
 func TestPickRight(t *testing.T) {
@@ -57,7 +59,7 @@ func TestCombine(t *testing.T) {
 
 	mapIter := maps.All(m)
 
-	got := make([]Pair[int, string], 0, 3)
+	got := make([]tuple.Pair[int, string], 0, 3)
 
 	// Act
 	for e := range Combine(mapIter) {
@@ -65,10 +67,10 @@ func TestCombine(t *testing.T) {
 	}
 
 	// Assert
-	want := []Pair[int, string]{
-		{1, "a"},
-		{2, "b"},
-		{3, "c"},
+	want := []tuple.Pair[int, string]{
+		tuple.PairOf(1, "a"),
+		tuple.PairOf(2, "b"),
+		tuple.PairOf(3, "c"),
 	}
 
 	assert.ElementsMatch(t, want, got)
@@ -135,9 +137,9 @@ func TestCombine_withBreak(t *testing.T) {
 	// Act
 	var got string
 	for e := range Combine(mapIter) {
-		got = e.Right
+		got = e.Second()
 
-		if e.Left == 2 {
+		if e.First() == 2 {
 			break
 		}
 	}
