@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-var arrayElemPattern = regexp.MustCompile(`^(.+)\[(\d+)]$`)
+var getArrayElemPattern = regexp.MustCompile(`^(.+)\[(\d+)]$`)
 
 // Get returns the value at the given path, when it exists and is of type T.
 func Get[T any](object Object, path ...string) (value T, ok bool) {
@@ -25,7 +25,7 @@ func get[T any](object any, path ...string) (value T, ok bool) {
 
 	next, path := path[0], path[1:]
 
-	nextParts := arrayElemPattern.FindStringSubmatch(next)
+	nextParts := getArrayElemPattern.FindStringSubmatch(next)
 	if nextParts != nil {
 		next := nextParts[1]
 		index := nextParts[2]
