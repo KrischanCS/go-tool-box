@@ -66,66 +66,6 @@ func TestNewOptional(t *testing.T) {
 	}
 }
 
-func TestOptional_Clear(t *testing.T) {
-	t.Parallel()
-
-	// Arrange
-	values := []any{
-		"test",
-		1,
-		1.23,
-		true,
-		state{
-			State:   "France",
-			Capital: "Paris",
-		},
-	}
-
-	for _, value := range values {
-		t.Run(reflect.TypeOf(value).Kind().String(), func(t *testing.T) {
-			opt := optional.Of(value)
-
-			// Act
-			opt.Clear()
-
-			// Assert
-			got, ok := opt.Get()
-			assert.False(t, ok)
-			assert.Zero(t, got)
-		})
-	}
-}
-
-func TestOptional_Set(t *testing.T) {
-	t.Parallel()
-
-	// Arrange
-	values := []any{
-		"test",
-		1,
-		1.23,
-		true,
-		state{
-			State:   "France",
-			Capital: "Paris",
-		},
-	}
-
-	opt := optional.Empty[any]()
-
-	for _, value := range values {
-		t.Run(reflect.TypeOf(value).Kind().String(), func(t *testing.T) {
-			// Act
-			opt.Set(value)
-
-			// Assert
-			got, ok := opt.Get()
-			assert.True(t, ok)
-			assert.Equal(t, value, got)
-		})
-	}
-}
-
 func TestOptional_String(t *testing.T) {
 	t.Parallel()
 

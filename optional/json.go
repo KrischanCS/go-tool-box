@@ -15,7 +15,10 @@ func (o Optional[T]) MarshalJSON() ([]byte, error) {
 // otherwise an empty.
 func (o *Optional[T]) UnmarshalJSON(d []byte) error {
 	if string(d) == "null" {
-		o.Clear()
+		var t T
+		o.value = t
+		o.present = false
+
 		return nil
 	}
 

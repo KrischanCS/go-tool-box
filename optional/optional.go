@@ -31,21 +31,9 @@ func (o Optional[T]) Get() (value T, ok bool) {
 	return o.value, o.present
 }
 
-// Set sets the value and marks the Optional as present.
-func (o *Optional[T]) Set(value T) {
-	o.value = value
-	o.present = true
-}
-
-// Clear clears the value and marks the Optional as not present.
-func (o *Optional[T]) Clear() {
-	o.value = *new(T)
-	o.present = false
-}
-
 // String returns a string representation in the format:
-//   - If Present: "Optional[{{type}}]: {{value}}"
-//   - If Empty: "Optional[{{type}}]: <empty>"
+//   - If Present: `Optional[{{type}}]: {{value}}`
+//   - If Empty: `Optional[{{type}}]: <empty>`
 func (o Optional[T]) String() string {
 	if !o.present {
 		return fmt.Sprintf("(Optional[%T]: <empty>)", o.value)
