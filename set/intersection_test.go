@@ -1,12 +1,61 @@
 package set_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/KrischanCS/go-toolbox/set"
 )
+
+func ExampleIntersectionOf() {
+	setA := set.Of(1, 2, 3, 4)
+	setB := set.Of(3, 2, 5)
+	setC := set.Of(3, 1, 5)
+
+	fmt.Println("A ∩ B:", set.IntersectionOf(setA, setB))
+	fmt.Println("B ∩ C:", set.IntersectionOf(setB, setC))
+	fmt.Println("C ∩ A:", set.IntersectionOf(setC, setA))
+
+	fmt.Println("A ∩ B ∩ C:", set.IntersectionOf(setA, setB, setC))
+
+	fmt.Println()
+
+	fmt.Println("Original sets are not modified:")
+	fmt.Println("A:", setA)
+	fmt.Println("B:", setB)
+	fmt.Println("C:", setC)
+
+	// Output:
+	// A ∩ B: (Set[int]: [2 3])
+	// B ∩ C: (Set[int]: [3 5])
+	// C ∩ A: (Set[int]: [1 3])
+	// A ∩ B ∩ C: (Set[int]: [3])
+	//
+	// Original sets are not modified:
+	// A: (Set[int]: [1 2 3 4])
+	// B: (Set[int]: [2 3 5])
+	// C: (Set[int]: [1 3 5])
+}
+
+func ExampleSet_Intersection() {
+	setA := set.Of(1, 2, 3, 4)
+	setB := set.Of(3, 2, 5)
+
+	setA.Intersection(setB)
+	fmt.Println("A = A ∩ B:", setA)
+
+	setC := set.Of(3, 1, 5)
+	setD := set.Of(3, 4)
+
+	setB.Intersection(setC, setD)
+	fmt.Println("B = B ∩ C ∩ D:", setB)
+
+	// Output:
+	// A = A ∩ B: (Set[int]: [2 3])
+	// B = B ∩ C ∩ D: (Set[int]: [3])
+}
 
 //nolint:funlen
 func TestIntersection(t *testing.T) {

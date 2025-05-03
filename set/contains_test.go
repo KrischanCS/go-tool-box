@@ -1,12 +1,49 @@
 package set_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/KrischanCS/go-toolbox/set"
 )
+
+func ExampleSet_Contains() {
+	intSet := set.Of(1, 2, 3, 4)
+
+	fmt.Println(intSet.Contains(2))
+	fmt.Println(intSet.Contains(5))
+	fmt.Println(intSet.Contains(1, 2, 3))
+	fmt.Println(intSet.Contains(1, 2, 5))
+	fmt.Println(intSet.Contains(1, 2, 3, 4))
+	fmt.Println(intSet.Contains(1, 2, 3, 4, 5))
+
+	// Output:
+	// true
+	// false
+	// true
+	// false
+	// true
+	// false
+}
+
+func ExampleSet_ContainsExactly() {
+	intSet := set.Of(1, 2, 3, 4)
+
+	fmt.Println(intSet.ContainsExactly(2))
+	fmt.Println(intSet.ContainsExactly(5))
+	fmt.Println(intSet.ContainsExactly(1, 2, 3))
+	fmt.Println(intSet.ContainsExactly(1, 2, 3, 4))
+	fmt.Println(intSet.ContainsExactly(1, 2, 3, 4, 5))
+
+	// Output:
+	// false
+	// false
+	// false
+	// true
+	// false
+}
 
 func TestSet_Contains_Add(t *testing.T) {
 	t.Parallel()

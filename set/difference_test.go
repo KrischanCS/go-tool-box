@@ -1,12 +1,52 @@
 package set_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/KrischanCS/go-toolbox/set"
 )
+
+func ExampleDifferenceOf() {
+	setA := set.Of(1, 2, 3, 4)
+	setB := set.Of(3, 6)
+	setC := set.Of(4, 7)
+
+	diff := set.DifferenceOf(setA, setB)
+	fmt.Println("A - B:", diff)
+	fmt.Println("Original is not modified:", setA)
+
+	fmt.Println()
+
+	diff = set.DifferenceOf(setA, setB, setC)
+	fmt.Println("A - B - C:", diff)
+
+	// Output:
+	// A - B: (Set[int]: [1 2 4])
+	// Original is not modified: (Set[int]: [1 2 3 4])
+	//
+	// A - B - C: (Set[int]: [1 2])
+}
+
+func ExampleSet_Difference() {
+	setA := set.Of(1, 2, 3, 4)
+	setB := set.Of(3, 4, 5, 6)
+
+	setA.Difference(setB)
+	fmt.Println("A = A - B:", setA)
+
+	setC := set.Of(3, 5)
+	setD := set.Of(6, 7)
+
+	setB.Difference(setC, setD)
+	fmt.Println("B = B - C - D:", setB)
+
+	// Output:
+	// A = A - B: (Set[int]: [1 2])
+	// B = B - C - D: (Set[int]: [4])
+}
 
 //nolint:funlen
 func TestSet_Difference(t *testing.T) {

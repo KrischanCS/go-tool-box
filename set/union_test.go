@@ -1,12 +1,60 @@
 package set_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/KrischanCS/go-toolbox/set"
 )
+
+func ExampleUnionOf() {
+	setA := set.Of(1, 2, 3, 4)
+	setB := set.Of(3, 6)
+	setC := set.Of(4, 7)
+
+	fmt.Println("A ∪ B:", set.UnionOf(setA, setB))
+	fmt.Println("B ∪ C:", set.UniqueOf(setB, setC))
+	fmt.Println("C ∪ A:", set.UnionOf(setC, setA))
+	fmt.Println("A ∪ B ∪ C:", set.UnionOf(setA, setB, setC))
+
+	fmt.Println()
+
+	fmt.Println("Originals are not modified:")
+	fmt.Println("A:", setA)
+	fmt.Println("B:", setB)
+	fmt.Println("C:", setC)
+
+	// Output:
+	// A ∪ B: (Set[int]: [1 2 3 4 6])
+	// B ∪ C: (Set[int]: [3 4 6 7])
+	// C ∪ A: (Set[int]: [1 2 3 4 7])
+	// A ∪ B ∪ C: (Set[int]: [1 2 3 4 6 7])
+	//
+	// Originals are not modified:
+	// A: (Set[int]: [1 2 3 4])
+	// B: (Set[int]: [3 6])
+	// C: (Set[int]: [4 7])
+}
+
+func ExampleSet_Union() {
+	setA := set.Of(1, 2, 3, 4)
+	setB := set.Of(3, 6)
+
+	setA.Union(setB)
+	fmt.Println("A = A ∪ B:", setA)
+
+	setC := set.Of(3, 1, 5)
+	setD := set.Of(3, 4)
+	setB.Union(setC, setD)
+
+	fmt.Println("B = B ∪ C ∪ D:", setB)
+
+	// Output:
+	// A = A ∪ B: (Set[int]: [1 2 3 4 6])
+	// B = B ∪ C ∪ D: (Set[int]: [1 3 4 5 6])
+}
 
 func TestUnion(t *testing.T) {
 	t.Parallel()
