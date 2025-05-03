@@ -8,6 +8,7 @@
 
 = Go Toolbox
 :toc:
+:toclevels: 3
 
 A collection of packages for Go.
 
@@ -29,23 +30,13 @@ Currently, the tool box contains the following packages, more may follow.
 
 If some of them turns out specifically useful, they may be moved to their own modules.
 
-=== Set
+=== Wrapper
 
-Set provides an implementation of a set, meaning a collection of unique, unordered values.
+Types for wrapping values together for specific use cases.
 
-It implements basic collection options as add, remove, contains, len and clear as well as common set operations like union, intersection and difference.
+==== Result
 
-=== Must
-
-Must provides functions which panics on error and returns the value(s) passed to them.
-
-This is usually not recommended, but can be helpful in tests or initialization of an application.
-
-It can be used like regex.MustCompile or template.MustParse but for arbitrary functions (With two or three return parameters).
-
-=== Result
-
-Result a type wrapping either a value or an error.
+Package result provides a type wrapping either a value or an error.
 It is inspired by usts result type, but tries to remain as idiomatic to go as possible
 
 Main use case is to send it over channels, when possible errors should be propagated to the receiver.
@@ -56,15 +47,17 @@ Apart from that, after calling `Get()`, it can be used with go's idiomatic error
 --
 value, err := result.Get()
 if err != nil {
-  handle error
+  //handle error
 }
+
+// Do something with value
 --
 
-=== Pool
+==== Tuple
 
-Pool provides a convenient way to create a worker pools
+Package tuple provides simple wrappers for specific use cases.
 
-=== Optional
+==== Optional
 
 Optional provides a generic Optional type for Go.
 
@@ -72,88 +65,42 @@ For a lot of use cases, I don't like mixing the concepts of referencing and opti
 
 The Optionals implemented in this package handle marshalling and unmarshalling to/from json and xml and are handling null-values, not existing values and omitzero/omitempty.
 
-=== Iterator
+==== Must
 
-Iterator implements composable iterator functions.
+Package must provides functions which panics on error and returns the value(s) passed to them.
 
-Currently this is mainly for playing around and getting to know the characteristics of the go iterators, which are
+This is usually not recommended, but can be helpful in tests or initialization of an application.
+
+It can be used like regex.MustCompile or template.MustParse but for arbitrary functions (With two or three return parameters).
+
+
+=== Data Structures
+
+Packages implementing or working with more complex data structures.
+
+==== Set
+
+Package set provides an implementation of a set, meaning a collection of unique, unordered values.
+
+It implements basic collection options as add, remove, contains, len and clear as well as common set operations like union, intersection and difference.
+
+==== Iterator
+
+Package iterator implements composable iterator functions.
+
+Currently ,this is mainly for playing around and getting to know the characteristics of the go iterators, which are
 part of the language since go 1.23 (when writing this, go 1.24 is the recent version, so they are still quite new).
 
-In the tests of this package some benchmarks are included, which compare the performance of the different iterators with equivalent implementations using normal for-loops.
-Executing those can be seen that the iterators add some overhead (on my machine roughly 2-4 ns slower per loop execution than a standard for loop), so in performance critical code they should probably be avoided for tight loops.
-If more significant work is done in the loop body, the overhead becomes more negligible.
+==== Object
 
-On the other hand the iterators can improve readability and clarity in some cases in my opinion, e.g. the `Zip` or
-`Filter`
-
-.Filter with iterator.
-[source,go]
-----
-res := 0
-for v := range iterator.Filter(iterator, divisibleByThree) {
-	res += v*3 - 1
-	if v == breakAt {
-		break
-	}
-}
-----
-
-.Filter with for-loop.
-[source,go]
-----
-res := 0
-for i := from; i < to; i++ {
-	if !divisibleByThree(i) {
-		continue
-	}
-
-	res += i*3 - 1
-	if i == breakAt {
-		break
-	}
-}
-----
-
-.Zip with iterator.
-[source,go]
-----
-intRes := 0
-strRes := ""
-for pair := range iterator.Zip(iterator1, iterator2) {
-	intRes += pair.Left*3 - 1
-	strRes += pair.Right
-	if pair.Left == breakAt {
-		break
-	}
-}
-----
-
-.Zip with for-loop.
-[source,go]
-----
-intRes := 0
-strRes := ""
-
-for i, v := range slice1 {
-	if i > len(slice2)-1 {
-		break
-	}
-
-	intRes += v*3 - 1
-	strRes += slice2[i]
-
-	if v == breakAt {
-		break
-	}
-}
-----
-
-=== Object
-
-Object provides utility methods to work with values where the underlying type is 'map[string]any'.
+Package object provides utility methods to work with values where the underlying type is 'map[string]any'.
 
 This can be handy when working with unknown or dynamic json/yaml/toml/… data.
 
-=== Tuple
+=== Concurrency
 
-Tuple provides simple types for combining values.
+Packages implementing helpers for concurrent programming.
+
+==== Pool
+
+Package pool provides a convenient way to create a worker pools
