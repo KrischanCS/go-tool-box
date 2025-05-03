@@ -1,6 +1,7 @@
 package object_test
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"testing"
@@ -9,6 +10,78 @@ import (
 
 	"github.com/KrischanCS/go-toolbox/object"
 )
+
+func ExampleGet() {
+	o := object.Object{
+		"int":  42,
+		"bool": true,
+		"object": map[string]any{
+			"nestedSlice": []float64{1.618, 2.718, 9.81},
+			"nestedObject": map[string]any{
+				"deepNestedObject": map[string]any{
+					"deepNestedFloat": 6.28,
+				},
+			},
+		},
+		"sliceWithObject": []object.Object{
+			{
+				"string": "blue gopher",
+			},
+		},
+	}
+
+	i, ok := object.Get[int](o, "int")
+	fmt.Println("Gets array from property at root:", ok, i)
+
+	i, ok = object.Get[int](o, "anotherInt")
+	fmt.Println(
+		"If property doesn't exist, ok will be false and the value is the zero value of the type:",
+		ok,
+		i,
+	)
+
+	b, ok := object.Get[bool](o, "int")
+	fmt.Println("If type mismatches, ok is also false:", ok, b)
+
+	f, ok := object.Get[float64](
+		o,
+		"object",
+		"nestedObject",
+		"deepNestedObject",
+		"deepNestedFloat",
+	)
+	fmt.Println("Nested objects can be obtained with complete path:", ok, f)
+
+	f, ok = object.Get[float64](o, "object", "nestedSlice[2]")
+	fmt.Println(
+		"Values from arrays can be obtained by adding [{{index}}] to a path element:",
+		ok,
+		f,
+	)
+
+	f, ok = object.Get[float64](o, "object", "nestedSlice[23]")
+	fmt.Println(
+		"If index is out of bounds, ok is false and value the zero value of the type:",
+		ok,
+		f,
+	)
+
+	s, ok := object.Get[string](o, "sliceWithObject[0]", "string")
+	fmt.Println(
+		"Values from nested objects in arrays can be obtained:",
+		ok,
+		s,
+	)
+
+	// Output:
+	// Gets array from property at root: true 42
+	// If property doesn't exist, ok will be false and the value is the zero value of the type: false 0
+	// If type mismatches, ok is also false: false false
+	// Nested objects can be obtained with complete path: true 6.28
+	// Values from arrays can be obtained by adding [{{index}}] to a path element: true 9.81
+	// If index is out of bounds, ok is false and value the zero value of the type: false 0
+	// Values from nested objects in arrays can be obtained: true blue gopher
+}
 
 //nolint:gochecknoglobals
 var testObject = map[string]any{

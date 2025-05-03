@@ -11,6 +11,42 @@ import (
 	"github.com/KrischanCS/go-toolbox/object"
 )
 
+func ExampleSet() {
+	o := object.Object{
+		"int":           23,
+		"stringToFloat": "text",
+		"object": object.Object{
+			"array": []any{1, 2, 3},
+		},
+	}
+
+	object.Set(o, 42, "int")
+	fmt.Println(o["int"])
+
+	object.Set(o, 6.28, "stringToFloat")
+	fmt.Println(o["stringToFloat"])
+
+	object.Set(o, 23, "object", "array[0]")
+	fmt.Println(o["object"].(map[string]any)["array"])
+
+	object.Set(o, 2.718, "object", "array[]")
+	fmt.Println(o["object"].(map[string]any)["array"])
+
+	object.Set(o, true, "object", "array[47]")
+	fmt.Println(o["object"].(map[string]any)["array"])
+
+	object.Set(o, true, "object", "newBool")
+	fmt.Println(o["object"])
+
+	// Output:
+	// 42
+	// 6.28
+	// [23 2 3]
+	// [23 2 3 2.718]
+	// [23 2 3 2.718 true]
+	// map[array:[23 2 3 2.718 true] newBool:true]
+}
+
 //nolint:funlen
 func TestSet_any(t *testing.T) {
 	t.Parallel()
