@@ -1,40 +1,41 @@
 // If you read this, you view it somewhere where asciidoc is not supported
 // (e.g. on pkg.go.dev).
 //
-// Github renders this file nicely, so you can view it there: github.com/KrischanCS/go-toolbox
+// GitHub renders this file nicely, so you can view it there: github.com/KrischanCS/go-toolbox
 //
 // I stay with asciidoc for the moment, because this is a playground project for
 // me anyway and I want to check it out as markdown alternative.
 
-== Go Toolbox
+= Go Toolbox
+:toc:
 
-This is a collection of packages, which I implemented out of one of the following reasons:
+A collection of packages for Go.
 
-* I tend to implement parts of it in different projects, and wanted to have them in one place.
-* I wanted to learn and/or play around with some concepts, which I find interesting.
-* I wanted to compare different implementations of the same concept, e.g. iterators.
+The toolbox is a place where I collect stuff I either used and implemented multiple times already or I want to try out and don't have another place for it yet.
 
-While there are unit tests for everything in this module, not all of this was ever used in production and I don't
-guarantee to maintain any of this in the future. So I can't recommend to use this in your projects. Remember:
+I try to keep everything tested and documented, but I don't guarantee to keep packages in here maintained.
+
+If you find something of it useful, I recommend having a look on the implementation and do something similar on your own.
+According to the go proverb:
 
 [quote,Rob Pike in his 'Go Proverbs' talk,https:go-proverbs.github.io]
 --
 A little copying is better than a little dependency.
 --
 
-=== Packages
+== Packages
 
 Currently, the tool box contains the following packages, more may follow.
 
 If some of them turns out specifically useful, they may be moved to their own modules.
 
-==== Set
+=== Set
 
 Set provides an implementation of a set, meaning a collection of unique, unordered values.
 
 It implements basic collection options as add, remove, contains, len and clear as well as common set operations like union, intersection and difference.
 
-==== Must
+=== Must
 
 Must provides functions which panics on error and returns the value(s) passed to them.
 
@@ -42,7 +43,7 @@ This is usually not recommended, but can be helpful in tests or initialization o
 
 It can be used like regex.MustCompile or template.MustParse but for arbitrary functions (With two or three return parameters).
 
-==== Result
+=== Result
 
 Result a type wrapping either a value or an error.
 It is inspired by usts result type, but tries to remain as idiomatic to go as possible
@@ -59,11 +60,11 @@ if err != nil {
 }
 --
 
-==== Pool
+=== Pool
 
 Pool provides a convenient way to create a worker pools
 
-==== Optional
+=== Optional
 
 Optional provides a generic Optional type for Go.
 
@@ -71,9 +72,12 @@ For a lot of use cases, I don't like mixing the concepts of referencing and opti
 
 The Optionals implemented in this package handle marshalling and unmarshalling to/from json and xml and are handling null-values, not existing values and omitzero/omitempty.
 
-==== Iterator
+=== Iterator
 
-Iterator implements a handful of different iterators. currently this is mainly for playing around and getting to know the characteristics of the go iterators, which are part of the language since go 1.23 (when writing this, go 1.24 is the recent version, so they are still quite new).
+Iterator implements composable iterator functions.
+
+Currently this is mainly for playing around and getting to know the characteristics of the go iterators, which are
+part of the language since go 1.23 (when writing this, go 1.24 is the recent version, so they are still quite new).
 
 In the tests of this package some benchmarks are included, which compare the performance of the different iterators with equivalent implementations using normal for-loops.
 Executing those can be seen that the iterators add some overhead (on my machine roughly 2-4 ns slower per loop execution than a standard for loop), so in performance critical code they should probably be avoided for tight loops.
@@ -83,7 +87,7 @@ On the other hand the iterators can improve readability and clarity in some case
 `Filter`
 
 .Filter with iterator.
-[source, go]
+[source,go]
 ----
 res := 0
 for v := range iterator.Filter(iterator, divisibleByThree) {
@@ -95,7 +99,7 @@ for v := range iterator.Filter(iterator, divisibleByThree) {
 ----
 
 .Filter with for-loop.
-[source, go]
+[source,go]
 ----
 res := 0
 for i := from; i < to; i++ {
@@ -111,7 +115,7 @@ for i := from; i < to; i++ {
 ----
 
 .Zip with iterator.
-[source, go]
+[source,go]
 ----
 intRes := 0
 strRes := ""
@@ -125,7 +129,7 @@ for pair := range iterator.Zip(iterator1, iterator2) {
 ----
 
 .Zip with for-loop.
-[source, go]
+[source,go]
 ----
 intRes := 0
 strRes := ""
@@ -144,3 +148,8 @@ for i, v := range slice1 {
 }
 ----
 
+=== Object
+
+Object provides utility methods to work with values where the underlying type is 'map[string]any'.
+
+This can be handy when working with unknown or dynamic json/yaml/toml/… data.
