@@ -14,6 +14,7 @@ func ExampleReduce() {
 	i := iterator.Of(1, 2, 3, 4, 5)
 
 	var sum int
+
 	iterator.Reduce(i, &sum, func(acc *int, v int) {
 		*acc += v
 	})

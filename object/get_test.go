@@ -11,8 +11,9 @@ import (
 	"github.com/KrischanCS/go-toolbox/object"
 )
 
+//nolint:funlen
 func ExampleGet() {
-	o := object.Object{
+	obj := object.Object{
 		"int":  42,
 		"bool": true,
 		"object": map[string]any{
@@ -30,43 +31,43 @@ func ExampleGet() {
 		},
 	}
 
-	i, ok := object.Get[int](o, "int")
+	i, ok := object.Get[int](obj, "int")
 	fmt.Println("Gets array from property at root:", ok, i)
 
-	i, ok = object.Get[int](o, "anotherInt")
+	i, ok = object.Get[int](obj, "anotherInt")
 	fmt.Println(
 		"If property doesn't exist, ok will be false and the value is the zero value of the type:",
 		ok,
 		i,
 	)
 
-	b, ok := object.Get[bool](o, "int")
+	b, ok := object.Get[bool](obj, "int")
 	fmt.Println("If type mismatches, ok is also false:", ok, b)
 
-	f, ok := object.Get[float64](
-		o,
+	float, ok := object.Get[float64](
+		obj,
 		"object",
 		"nestedObject",
 		"deepNestedObject",
 		"deepNestedFloat",
 	)
-	fmt.Println("Nested objects can be obtained with complete path:", ok, f)
+	fmt.Println("Nested objects can be obtained with complete path:", ok, float)
 
-	f, ok = object.Get[float64](o, "object", "nestedSlice[2]")
+	float, ok = object.Get[float64](obj, "object", "nestedSlice[2]")
 	fmt.Println(
 		"Values from arrays can be obtained by adding [{{index}}] to a path element:",
 		ok,
-		f,
+		float,
 	)
 
-	f, ok = object.Get[float64](o, "object", "nestedSlice[23]")
+	float, ok = object.Get[float64](obj, "object", "nestedSlice[23]")
 	fmt.Println(
 		"If index is out of bounds, ok is false and value the zero value of the type:",
 		ok,
-		f,
+		float,
 	)
 
-	s, ok := object.Get[string](o, "sliceWithObject[0]", "string")
+	s, ok := object.Get[string](obj, "sliceWithObject[0]", "string")
 	fmt.Println(
 		"Values from nested objects in arrays can be obtained:",
 		ok,

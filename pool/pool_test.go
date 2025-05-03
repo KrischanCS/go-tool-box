@@ -1,6 +1,7 @@
-package pool
+package pool_test
 
 import (
+	"fmt"
 	"reflect"
 	"strconv"
 	"testing"
@@ -8,7 +9,38 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/KrischanCS/go-toolbox/iterator"
+	"github.com/KrischanCS/go-toolbox/pool"
 )
+
+func ExampleNew() {
+	doubleFn := func(i int) int {
+		return i * 2
+	}
+
+	inC := make(chan int)
+
+	outC := pool.New(doubleFn, inC, &pool.Options{
+		PoolSize:      3,
+		OutBufferSize: 1,
+	})
+
+	go func() {
+		for _, i := range []int{1, 2, 3, 4, 5} {
+			inC <- i
+		}
+
+		close(inC)
+	}()
+
+	var sum int
+	for v := range outC {
+		sum += v
+	}
+
+	fmt.Println(sum)
+
+	// Output: 30
+}
 
 func TestNewPool(t *testing.T) {
 	t.Parallel()
@@ -22,7 +54,7 @@ func TestNewPool(t *testing.T) {
 	inC := make(chan int)
 
 	// Act
-	outC := NewPool(double, inC, nil)
+	outC := pool.New(double, inC, nil)
 
 	go func() {
 		for _, v := range values {
@@ -61,9 +93,9 @@ func TestNewPool_ChainedPools(t *testing.T) {
 	inC := make(chan int)
 
 	// Act
-	intermediate1 := NewPool(double, inC, nil)
-	intermediate2 := NewPool(toFloatPlus50Percent, intermediate1, nil)
-	outC := NewPool(toString, intermediate2, nil)
+	intermediate1 := pool.New(double, inC, nil)
+	intermediate2 := pool.New(toFloatPlus50Percent, intermediate1, nil)
+	outC := pool.New(toString, intermediate2, nil)
 
 	go func() {
 		for v := range values {
@@ -110,7 +142,7 @@ func TestNewPool_BufferSizeIsApplied(t *testing.T) {
 	inC := make(chan int)
 
 	// Act
-	outC := NewPool(double, inC, &Options{OutBufferSize: 10})
+	outC := pool.New(double, inC, &pool.Options{OutBufferSize: 10})
 
 	// Assert
 	bufferSize := reflect.ValueOf(outC).Cap()

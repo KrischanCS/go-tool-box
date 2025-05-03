@@ -11,8 +11,9 @@ import (
 	"github.com/KrischanCS/go-toolbox/object"
 )
 
+//nolint:errcheck,forcetypeassert
 func ExampleSet() {
-	o := object.Object{
+	obj := object.Object{
 		"int":           23,
 		"stringToFloat": "text",
 		"object": object.Object{
@@ -20,23 +21,23 @@ func ExampleSet() {
 		},
 	}
 
-	object.Set(o, 42, "int")
-	fmt.Println(o["int"])
+	object.Set(obj, 42, "int")
+	fmt.Println(obj["int"])
 
-	object.Set(o, 6.28, "stringToFloat")
-	fmt.Println(o["stringToFloat"])
+	object.Set(obj, 6.28, "stringToFloat")
+	fmt.Println(obj["stringToFloat"])
 
-	object.Set(o, 23, "object", "array[0]")
-	fmt.Println(o["object"].(map[string]any)["array"])
+	object.Set(obj, 23, "object", "array[0]")
+	fmt.Println(obj["object"].(map[string]any)["array"])
 
-	object.Set(o, 2.718, "object", "array[]")
-	fmt.Println(o["object"].(map[string]any)["array"])
+	object.Set(obj, 2.718, "object", "array[]")
+	fmt.Println(obj["object"].(map[string]any)["array"])
 
-	object.Set(o, true, "object", "array[47]")
-	fmt.Println(o["object"].(map[string]any)["array"])
+	object.Set(obj, true, "object", "array[47]")
+	fmt.Println(obj["object"].(map[string]any)["array"])
 
-	object.Set(o, true, "object", "newBool")
-	fmt.Println(o["object"])
+	object.Set(obj, true, "object", "newBool")
+	fmt.Println(obj["object"])
 
 	// Output:
 	// 42

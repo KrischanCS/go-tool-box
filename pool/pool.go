@@ -14,7 +14,7 @@ type Options struct {
 	OutBufferSize int
 }
 
-// NewPool creates a worker pool. It will call fn for each value from in and
+// New creates a worker pool. It will call fn for each value from in and
 // send the results to out. There is no guarantee about the order of the
 // results.
 //
@@ -23,7 +23,7 @@ type Options struct {
 //
 // The behavior of the pool can be configured with opts, if opts is nil,
 // defaults will be used (see [Options]).
-func NewPool[IN, OUT any](fn func(IN) OUT, inChan <-chan IN, options *Options) <-chan OUT {
+func New[IN, OUT any](fn func(IN) OUT, inChan <-chan IN, options *Options) <-chan OUT {
 	opts := initOptions(options)
 
 	out := make(chan OUT, opts.OutBufferSize)
