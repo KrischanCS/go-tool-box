@@ -11,6 +11,54 @@ import (
 	"github.com/KrischanCS/go-toolbox/must"
 )
 
+func ExampleValue() {
+	v := must.Value(func() (string, error) {
+		return "test", nil
+	}())
+
+	fmt.Println(v)
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Println(r)
+			}
+		}()
+
+		must.Value(func() (string, error) {
+			return "", io.EOF
+		}())
+	}()
+
+	// Output:
+	// test
+	// Error in call to must.Value: [*errors.errorString] - EOF
+}
+
+func ExampleValues() {
+	v1, v2 := must.Values(func() (string, float64, error) {
+		return "test", 6.28, nil
+	}())
+
+	fmt.Println(v1, v2)
+
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Println(r)
+			}
+		}()
+
+		must.Values(func() (string, float64, error) {
+			return "", 0, io.EOF
+		}())
+	}()
+
+	// Output:
+	// test 6.28
+	// Error in call to must.Values: [*errors.errorString] - EOF
+}
+
 func TestValue(t *testing.T) {
 	t.Parallel()
 
