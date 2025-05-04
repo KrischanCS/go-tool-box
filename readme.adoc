@@ -37,7 +37,7 @@ Types for wrapping values together for specific use cases.
 ==== Result
 
 Package result provides a type wrapping either a value or an error.
-It is inspired by usts result type, but tries to remain as idiomatic to go as possible
+It is inspired by rusts result type, but tries to remain as idiomatic to go as possible
 
 Main use case is to send it over channels, when possible errors should be propagated to the receiver.
 

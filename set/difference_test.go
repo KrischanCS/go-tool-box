@@ -92,7 +92,7 @@ func TestSet_Difference(t *testing.T) {
 			want:      []any{9.81},
 		},
 		{
-			name: "Should remove all values, when all are presen in other sets",
+			name: "Should remove all values, when all are present in other sets",
 			set:  set.Of[any](point{1, 2}, point{3, 4}, point{5, 6}),
 			otherSets: []set.Set[any]{
 				set.Of[any](point{1, 2}, point{5, 6}),

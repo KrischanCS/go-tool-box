@@ -147,7 +147,7 @@ func TestSet_any(t *testing.T) {
 			want:  object.Object{"object": []any{6.28}},
 		},
 		{
-			name:  "Should replace a non array value with an array if an index is privided",
+			name:  "Should replace a non array value with an array if an index is provided",
 			input: object.Object{"object": object.Object{"field": 23}},
 			path:  []string{"object", "field[5]"},
 			value: 42,
@@ -190,13 +190,13 @@ func TestSet_ShouldPanicWhenArrayIndexIsGreaterThanMaxInr(t *testing.T) {
 
 	// Arrange
 	input := object.Object{"array": []any{1, 2, 3}}
-	pathElemnt := fmt.Sprintf("array[%d]", uint64(math.MaxInt)+1)
+	pathElement := fmt.Sprintf("array[%d]", uint64(math.MaxInt)+1)
 
 	// Act & Assert
 	assert.PanicsWithValue(t,
 		`Parsing index in object-path: strconv.Atoi: parsing "9223372036854775808": value out of range`,
 		func() {
-			object.Set(input, 42, pathElemnt)
+			object.Set(input, 42, pathElement)
 		},
 	)
 }

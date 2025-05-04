@@ -1,4 +1,4 @@
-// Package iterator implements a composable iterator functions
+// Package iterator implements composable iterator functions
 //
 // The package is at the moment mostly build for trying out iterators and their
 // characteristics.

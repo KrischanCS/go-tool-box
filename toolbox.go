@@ -1,13 +1,15 @@
-// Package toolbox is a collection of packages, which I implemented out of one
-// of the following reasons:
+// Package toolbox is a collection utility packages for Go.
 //
-// - I tend to implement parts of it in different projects, and wanted to have them in one place.
-// - I wanted to learn and/or play around with some concepts, which I find interesting.
-// - I wanted to compare different implementations of the same concept, e.g. iterators.
+// The toolbox is a place where I collect stuff I either used and implemented
+// multiple times already or I want to try out and don't have another place for
+// it yet.
 //
-// While there are unit tests for everything in this module, not all of this was
-// ever used in production and I don't guarantee to maintain any of this in the
-// future. So I can't recommend to use this in your projects. Remember:
+// I try to keep everything tested and documented, but I don't guarantee to keep
+// packages in here maintained.
+//
+// If you find something of it useful, I recommend having a look on the
+// implementation and do something similar on your own. According to the go
+// proverb:
 //
 // "A little copying is better than a little dependency."
 // ([Go Proverbs])

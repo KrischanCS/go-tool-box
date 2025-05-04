@@ -8,7 +8,7 @@ import (
 	"github.com/KrischanCS/go-toolbox/iterator/reducer"
 )
 
-func ExampleReducer() {
+func ExampleSum() {
 	i := iterator.Of(1, 2, 3, 4, 5)
 
 	sum := 0
@@ -42,7 +42,7 @@ func ExampleJoin() {
 	// Output: a, b, c
 }
 
-func ExampleReduce() {
+func ExampleGroupBy() {
 	type person struct {
 		name string
 		age  int

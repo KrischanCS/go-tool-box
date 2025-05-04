@@ -2,7 +2,7 @@ package iterator
 
 import "iter"
 
-// Concat creates an iteratow which yields the values of all given iterators in order.
+// Concat creates an iterator which yields the values of all given iterators in order.
 func Concat[T any](inputs ...iter.Seq[T]) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for _, input := range inputs {
