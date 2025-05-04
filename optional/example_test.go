@@ -80,8 +80,8 @@ func ExampleOptional_UnmarshalJSON() {
 
 	// Output:
 	// (Optional[string]: value1)
-	// (Optional[string]: <empty>)
-	// (Optional[string]: <empty>)
+	// (Optional[string] <empty>)
+	// (Optional[string] <empty>)
 }
 
 func ExampleOptional_MarshalXML() {
@@ -133,7 +133,7 @@ func ExampleOptional_UnmarshalXML() {
 	// Output:
 	// (Optional[string]: value1)
 	// (Optional[string]: )
-	// (Optional[string]: <empty>)
+	// (Optional[string] <empty>)
 }
 
 func ExampleOptional_String() {
@@ -145,5 +145,5 @@ func ExampleOptional_String() {
 
 	// Output:
 	// (Optional[string]: value)
-	// (Optional[string]: <empty>)
+	// (Optional[string] <empty>)
 }

@@ -8,6 +8,17 @@ import (
 	"github.com/KrischanCS/go-toolbox/iterator/reducer"
 )
 
+func ExampleCount() {
+	i := iterator.Of("a,", "b", "c", "d", "e")
+
+	count := 0
+	iterator.Reduce(i, &count, reducer.Count)
+
+	fmt.Println(count)
+
+	// Output: 5
+}
+
 func ExampleSum() {
 	i := iterator.Of(1, 2, 3, 4, 5)
 

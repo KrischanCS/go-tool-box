@@ -4,9 +4,14 @@ package reducer
 import (
 	"strings"
 
+	"github.com/KrischanCS/go-toolbox/constraints"
 	"github.com/KrischanCS/go-toolbox/iterator"
-	"github.com/KrischanCS/go-toolbox/iterator/constraints"
 )
+
+// Count increases acc on each call, effectively counting the number of inputs.
+func Count[T any](acc *int, _ T) {
+	*acc++
+}
 
 // Sum adds the given value to acc.
 func Sum[T constraints.RealNumber](acc *T, in T) {

@@ -19,7 +19,7 @@ I try to keep everything tested and documented, but I don't guarantee to keep pa
 If you find something of it useful, I recommend having a look on the implementation and do something similar on your own.
 According to the go proverb:
 
-[quote,Rob Pike in his 'Go Proverbs' talk,https:go-proverbs.github.io]
+[quote,Rob Pike in his 'Go Proverbs' talk,https://go-proverbs.github.io]
 --
 A little copying is better than a little dependency.
 --

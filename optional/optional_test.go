@@ -114,7 +114,7 @@ func TestOptional_String_empty_string(t *testing.T) {
 	got := opt.String()
 
 	// Assert
-	assert.Equal(t, "(Optional[string]: <empty>)", got)
+	assert.Equal(t, "(Optional[string] <empty>)", got)
 }
 
 func TestOptional_String_netIP(t *testing.T) {
@@ -127,5 +127,5 @@ func TestOptional_String_netIP(t *testing.T) {
 	got := opt.String()
 
 	// Assert
-	assert.Equal(t, "(Optional[net.IP]: <empty>)", got)
+	assert.Equal(t, "(Optional[net.IP] <empty>)", got)
 }

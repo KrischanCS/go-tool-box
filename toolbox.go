@@ -14,5 +14,5 @@
 // "A little copying is better than a little dependency."
 // ([Go Proverbs])
 //
-// [Go Proverbs]: https://blog.golang.org/proverbs
+// [Go Proverbs]: https://go-proverbs.github.io
 package toolbox

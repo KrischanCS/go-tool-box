@@ -3,7 +3,7 @@ package iterator
 import (
 	"iter"
 
-	"github.com/KrischanCS/go-toolbox/iterator/constraints"
+	"github.com/KrischanCS/go-toolbox/constraints"
 )
 
 // FromTo creates an iterator returning the values from start to end exclusive
