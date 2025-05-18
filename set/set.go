@@ -44,30 +44,13 @@ func WithCapacity[T comparable](capacity int) Set[T] {
 }
 
 // Add adds the given value to the set if it is not already present.
-//
-// It returns true if the value was newly added, and false if it was already
-// present.
-func (s Set[T]) Add(value T) bool {
-	if _, ok := s.keySetMap[value]; ok {
-		return false
-	}
-
+func (s Set[T]) Add(value T) {
 	s.keySetMap[value] = placeholder
-
-	return true
 }
 
 // Remove removes the given value from the set.
-//
-// It returns true if the value existed and false if not.
-func (s Set[T]) Remove(value T) bool {
-	if _, ok := s.keySetMap[value]; !ok {
-		return false
-	}
-
+func (s Set[T]) Remove(value T) {
 	delete(s.keySetMap, value)
-
-	return true
 }
 
 // Clear removes all values from the set.

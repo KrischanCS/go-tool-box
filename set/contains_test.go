@@ -70,20 +70,12 @@ func TestSet_Contains_Remove(t *testing.T) {
 	s := set.Of(1, 2, 3)
 
 	// Act
-	contained2 := s.Remove(2)
-	contained3 := s.Remove(3)
-	contained4 := s.Remove(4)
+	s.Remove(2)
+	s.Remove(3)
+	s.Remove(4)
 
 	// Assert
-	assert.True(t, s.Contains(1))
-	assert.False(t, s.Contains(2))
-	assert.False(t, s.Contains(3))
-
-	assert.Equal(t, 1, s.Len())
-
-	assert.True(t, contained2)
-	assert.True(t, contained3)
-	assert.False(t, contained4)
+	assert.ElementsMatch(t, []int{1}, s.Values())
 }
 
 //nolint:funlen
