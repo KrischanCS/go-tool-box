@@ -7,7 +7,7 @@ func (s Set[T]) Unique(others ...Set[T]) {
 		return
 	}
 
-	m := countAppearances(s, others)
+	m := createElementCounts(s, others)
 
 	for v, count := range m {
 		if count == 1 {
@@ -28,7 +28,7 @@ func UniqueOf[T comparable](sets ...Set[T]) Set[T] {
 		return sets[0].Clone()
 	}
 
-	elementCounts := countAppearances(sets[0], sets[1:])
+	elementCounts := createElementCounts(sets[0], sets[1:])
 
 	s := setOfUniqueElements(elementCounts)
 
@@ -47,8 +47,9 @@ func setOfUniqueElements[T comparable](elementCounts map[T]int) Set[T] {
 	return s
 }
 
-// countAppearances counts int how many of the given sets each value appears.
-func countAppearances[T comparable](set Set[T], sets []Set[T]) map[T]int {
+// createElementCounts creates a map with each element appearing in any of the
+// given sets, and the number of times it appears.
+func createElementCounts[T comparable](set Set[T], sets []Set[T]) map[T]int {
 	m := make(map[T]int, set.Len())
 
 	for _, v := range set.Values() {
