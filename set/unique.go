@@ -7,7 +7,7 @@ func (s Set[T]) Unique(others ...Set[T]) {
 		return
 	}
 
-	m := createElementCounts(s, others)
+	m := createElementCounts(append(others, s)...)
 
 	for v, count := range m {
 		if count == 1 {
@@ -28,7 +28,7 @@ func UniqueOf[T comparable](sets ...Set[T]) Set[T] {
 		return sets[0].Clone()
 	}
 
-	elementCounts := createElementCounts(sets[0], sets[1:])
+	elementCounts := createElementCounts(sets...)
 
 	s := setOfUniqueElements(elementCounts)
 
@@ -49,56 +49,7 @@ func setOfUniqueElements[T comparable](elementCounts map[T]int) Set[T] {
 
 // createElementCounts creates a map with each element appearing in any of the
 // given sets, and the number of times it appears.
-func createElementCounts[T comparable](set Set[T], sets []Set[T]) map[T]int {
-	m := make(map[T]int, set.Len())
-
-	for _, v := range set.Values() {
-		m[v]++
-	}
-
-	for _, s := range sets {
-		for v := range s.keySetMap {
-			m[v]++
-		}
-	}
-
-	return m
-}
-
-// UniqueAlternative benchmarks a variant of Unique
-func (s Set[T]) UniqueAlternative(others ...Set[T]) {
-	if len(others) == 0 {
-		return
-	}
-
-	m := createElementCountsAlt(append(others, s)...)
-
-	for v, count := range m {
-		if count == 1 {
-			s.Add(v)
-		} else {
-			s.Remove(v)
-		}
-	}
-}
-
-// UniqueOfAlternative benchmarks a variant of UniqueOf
-func UniqueOfAlternative[T comparable](sets ...Set[T]) Set[T] {
-	switch len(sets) {
-	case 0:
-		return Of[T]()
-	case 1:
-		return sets[0].Clone()
-	}
-
-	elementCounts := createElementCountsAlt(sets...)
-
-	s := setOfUniqueElements(elementCounts)
-
-	return s
-}
-
-func createElementCountsAlt[T comparable](sets ...Set[T]) map[T]int {
+func createElementCounts[T comparable](sets ...Set[T]) map[T]int {
 	if len(sets) == 0 {
 		return nil
 	}
