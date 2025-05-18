@@ -64,3 +64,52 @@ func createElementCounts[T comparable](set Set[T], sets []Set[T]) map[T]int {
 
 	return m
 }
+
+// UniqueAlternative benchmarks a variant of Unique
+func (s Set[T]) UniqueAlternative(others ...Set[T]) {
+	if len(others) == 0 {
+		return
+	}
+
+	m := createElementCountsAlt(append(others, s)...)
+
+	for v, count := range m {
+		if count == 1 {
+			s.Add(v)
+		} else {
+			s.Remove(v)
+		}
+	}
+}
+
+// UniqueOfAlternative benchmarks a variant of UniqueOf
+func UniqueOfAlternative[T comparable](sets ...Set[T]) Set[T] {
+	switch len(sets) {
+	case 0:
+		return Of[T]()
+	case 1:
+		return sets[0].Clone()
+	}
+
+	elementCounts := createElementCountsAlt(sets...)
+
+	s := setOfUniqueElements(elementCounts)
+
+	return s
+}
+
+func createElementCountsAlt[T comparable](sets ...Set[T]) map[T]int {
+	if len(sets) == 0 {
+		return nil
+	}
+
+	m := make(map[T]int, sets[0].Len())
+
+	for _, s := range sets {
+		for v := range s.keySetMap {
+			m[v]++
+		}
+	}
+
+	return m
+}

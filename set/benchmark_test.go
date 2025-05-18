@@ -88,11 +88,6 @@ func BenchmarkSet_Difference(b *testing.B) {
 		sets[0].Difference(sets[1:]...)
 	})
 }
-func BenchmarkSet_Unique(b *testing.B) {
-	benchOp(b, func(sets []set.Set[string]) {
-		sets[0].Unique(sets[1:]...)
-	})
-}
 
 func BenchmarkUnionOf(b *testing.B) {
 	benchOpOf(b, set.UnionOf)
@@ -104,10 +99,6 @@ func BenchmarkDifferenceOf(b *testing.B) {
 
 func BenchmarkIntersectionOf(b *testing.B) {
 	benchOpOf(b, set.IntersectionOf)
-}
-
-func BenchmarkUniqueOf(b *testing.B) {
-	benchOpOf(b, set.UniqueOf)
 }
 
 func benchOp(b *testing.B, fn func(sets []set.Set[string])) {
