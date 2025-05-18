@@ -4,7 +4,7 @@ package set
 // sets.
 func (s Set[T]) Difference(others ...Set[T]) {
 	for _, other := range others {
-		for v := range other.m {
+		for v := range other.keySetMap {
 			s.Remove(v)
 		}
 	}

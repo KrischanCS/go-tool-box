@@ -3,7 +3,7 @@ package set
 // Union adds all values from the given sets to the current set.
 func (s Set[T]) Union(sets ...Set[T]) {
 	for _, set := range sets {
-		for v := range set.m {
+		for v := range set.keySetMap {
 			s.Add(v)
 		}
 	}

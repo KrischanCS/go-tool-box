@@ -14,22 +14,25 @@ import (
 	"sort"
 )
 
+type placeholderType struct{}
+
 //nolint:gochecknoglobals
-var placeholder = struct{}{}
+var placeholder = placeholderType{}
 
 // Set implements a collection of unique, unordered values.
 //
 // It is not thread-safe.
 type Set[T comparable] struct {
-	m map[T]struct{}
+	// keySetMap stores the values of the map as keys.
+	keySetMap map[T]placeholderType
 }
 
 // Of creates a new set with the given values.
 func Of[T comparable](values ...T) Set[T] {
-	s := Set[T]{m: make(map[T]struct{}, len(values))}
+	s := Set[T]{keySetMap: make(map[T]placeholderType, len(values))}
 
 	for _, v := range values {
-		s.m[v] = placeholder
+		s.keySetMap[v] = placeholder
 	}
 
 	return s
@@ -37,7 +40,7 @@ func Of[T comparable](values ...T) Set[T] {
 
 // WithCapacity creates a Set with the given capacity.
 func WithCapacity[T comparable](capacity int) Set[T] {
-	return Set[T]{m: make(map[T]struct{}, capacity)}
+	return Set[T]{keySetMap: make(map[T]placeholderType, capacity)}
 }
 
 // Add adds the given value to the set if it is not already present.
@@ -45,11 +48,11 @@ func WithCapacity[T comparable](capacity int) Set[T] {
 // It returns true if the value was newly added, and false if it was already
 // present.
 func (s Set[T]) Add(value T) bool {
-	if _, ok := s.m[value]; ok {
+	if _, ok := s.keySetMap[value]; ok {
 		return false
 	}
 
-	s.m[value] = placeholder
+	s.keySetMap[value] = placeholder
 
 	return true
 }
@@ -58,26 +61,26 @@ func (s Set[T]) Add(value T) bool {
 //
 // It returns true if the value existed and false if not.
 func (s Set[T]) Remove(value T) bool {
-	if _, ok := s.m[value]; !ok {
+	if _, ok := s.keySetMap[value]; !ok {
 		return false
 	}
 
-	delete(s.m, value)
+	delete(s.keySetMap, value)
 
 	return true
 }
 
 // Clear removes all values from the set.
 func (s Set[T]) Clear() {
-	clear(s.m)
+	clear(s.keySetMap)
 }
 
 // Values returns a slice of all values in the set without any particular
 // order.
 func (s Set[T]) Values() []T {
-	values := make([]T, 0, len(s.m))
+	values := make([]T, 0, len(s.keySetMap))
 
-	for v := range s.m {
+	for v := range s.keySetMap {
 		values = append(values, v)
 	}
 
@@ -88,7 +91,7 @@ func (s Set[T]) Values() []T {
 // order.
 func (s Set[T]) All() iter.Seq[T] {
 	return func(yield func(T) bool) {
-		for v := range s.m {
+		for v := range s.keySetMap {
 			if !yield(v) {
 				return
 			}
@@ -98,12 +101,12 @@ func (s Set[T]) All() iter.Seq[T] {
 
 // Len returns the number of values in the set.
 func (s Set[T]) Len() int {
-	return len(s.m)
+	return len(s.keySetMap)
 }
 
 // IsEmpty returns true if the set is empty.
 func (s Set[T]) IsEmpty() bool {
-	return len(s.m) == 0
+	return len(s.keySetMap) == 0
 }
 
 // Clone creates a shallow copy of the set.
@@ -122,8 +125,8 @@ func (s Set[T]) String() string {
 		return fmt.Sprintf("(Set[%T]: <empty>)", *new(T))
 	}
 
-	values := make([]string, 0, len(s.m))
-	for v := range s.m {
+	values := make([]string, 0, len(s.keySetMap))
+	for v := range s.keySetMap {
 		values = append(values, fmt.Sprintf("%v", v))
 	}
 

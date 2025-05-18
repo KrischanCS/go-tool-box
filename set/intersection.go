@@ -3,7 +3,7 @@ package set
 // Intersection removes all values from the set that are not contained in all
 // other given sets.
 func (s Set[T]) Intersection(others ...Set[T]) {
-	for v := range s.m {
+	for v := range s.keySetMap {
 		if !allContains(others, v) {
 			s.Remove(v)
 		}
@@ -45,7 +45,7 @@ func allContains[T comparable](others []Set[T], v T) bool {
 func swapShortestFirst[T comparable](sets []Set[T]) {
 	indexShortest := 0
 	for i, set := range sets {
-		if len(set.m) < len(sets[indexShortest].m) {
+		if len(set.keySetMap) < len(sets[indexShortest].keySetMap) {
 			indexShortest = i
 		}
 	}

@@ -56,7 +56,7 @@ func countAppearances[T comparable](set Set[T], sets []Set[T]) map[T]int {
 	}
 
 	for _, s := range sets {
-		for v := range s.m {
+		for v := range s.keySetMap {
 			m[v]++
 		}
 	}
