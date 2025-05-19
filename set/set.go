@@ -43,14 +43,18 @@ func WithCapacity[T comparable](capacity int) Set[T] {
 	return Set[T]{keySetMap: make(map[T]placeholderType, capacity)}
 }
 
-// Add adds the given value to the set if it is not already present.
-func (s Set[T]) Add(value T) {
-	s.keySetMap[value] = placeholder
+// Add adds the given values to the set if it is not already present.
+func (s Set[T]) Add(values ...T) {
+	for _, v := range values {
+		s.keySetMap[v] = placeholder
+	}
 }
 
-// Remove removes the given value from the set.
-func (s Set[T]) Remove(value T) {
-	delete(s.keySetMap, value)
+// Remove removes the given values from the set.
+func (s Set[T]) Remove(value ...T) {
+	for _, v := range value {
+		delete(s.keySetMap, v)
+	}
 }
 
 // Clear removes all values from the set.

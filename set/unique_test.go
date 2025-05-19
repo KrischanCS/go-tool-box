@@ -206,6 +206,7 @@ func BenchmarkSet_Unique(b *testing.B) {
 
 	for b.Loop() {
 		b.StopTimer()
+
 		setA := setA.Clone()
 
 		b.StartTimer()
@@ -231,6 +232,7 @@ func BenchmarkSet_UniqueHuge(b *testing.B) {
 
 	for b.Loop() {
 		b.StopTimer()
+
 		setA := setA.Clone()
 
 		b.StartTimer()
@@ -246,6 +248,7 @@ func BenchmarkSet_UniqueHuge_2Sets(b *testing.B) {
 
 	for b.Loop() {
 		b.StopTimer()
+
 		setA := setA.Clone()
 
 		b.StartTimer()
@@ -261,6 +264,7 @@ func BenchmarkSet_UniqueHuge_6Sets(b *testing.B) {
 
 	for b.Loop() {
 		b.StopTimer()
+
 		setAClone := setA.Clone()
 
 		b.StartTimer()

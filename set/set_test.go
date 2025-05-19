@@ -91,6 +91,36 @@ func TestSet_String(t *testing.T) {
 	}
 }
 
+func TestSet_Add(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := set.Of[string]("a", "b")
+
+	// Act
+	s.Add("c")
+	s.Add("d", "e")
+	s.Add("a", "c", "e", "f")
+
+	// Assert
+	assert.ElementsMatch(t, []string{"a", "b", "c", "d", "e", "f"}, s.Values())
+}
+
+func TestSet_Remove(t *testing.T) {
+	t.Parallel()
+
+	// Arrange
+	s := set.Of[string]("a", "b", "c", "d", "e")
+
+	// Act
+	s.Remove("a")
+	s.Remove("b", "c", "d")
+	s.Remove("a", "c")
+
+	// Assert
+	assert.ElementsMatch(t, []string{"e"}, s.Values())
+}
+
 func TestSet_Clear(t *testing.T) {
 	t.Parallel()
 
