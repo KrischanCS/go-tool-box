@@ -37,7 +37,7 @@ func BenchmarkFromTo(b *testing.B) {
 	}
 }
 
-func BenchmarkFromTo_For(b *testing.B) {
+func BenchmarkFromToLoop(b *testing.B) {
 	for b.Loop() {
 		res := 0
 
@@ -66,7 +66,7 @@ func BenchmarkFromToInclusive(b *testing.B) {
 	}
 }
 
-func BenchmarkFromToInclusive_For(b *testing.B) {
+func BenchmarkFromToInclusiveLoop(b *testing.B) {
 	for b.Loop() {
 		res := 0
 
@@ -95,7 +95,7 @@ func BenchmarkFromStepTo(b *testing.B) {
 	}
 }
 
-func BenchmarkFromStepTo_For(b *testing.B) {
+func BenchmarkFromStepToLoop(b *testing.B) {
 	for b.Loop() {
 		res := float64(0)
 
@@ -132,7 +132,7 @@ func BenchmarkFilter(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkFilter_For(b *testing.B) {
+func BenchmarkFilterLoop(b *testing.B) {
 	divisibleByThree := func(i int) bool {
 		return i%3 == 0
 	}
@@ -171,7 +171,7 @@ func BenchmarkOf(b *testing.B) {
 	}
 }
 
-func BenchmarkOf_For(b *testing.B) {
+func BenchmarkOfLoop(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 
 	for b.Loop() {
@@ -212,7 +212,7 @@ func BenchmarkPickLeft(b *testing.B) {
 	}
 }
 
-func BenchmarkPickLeft_For(b *testing.B) {
+func BenchmarkPickLeftLoop(b *testing.B) {
 	m := make(map[string]int)
 
 	for v := range FromTo(from, to) {
@@ -256,7 +256,7 @@ func BenchmarkPickRight(b *testing.B) {
 	}
 }
 
-func BenchmarkPickRight_For(b *testing.B) {
+func BenchmarkPickRightLoop(b *testing.B) {
 	m := make(map[string]int)
 
 	for v := range FromTo(from, to) {
@@ -301,7 +301,7 @@ func BenchmarkCombine(b *testing.B) {
 	}
 }
 
-func BenchmarkCombine_For(b *testing.B) {
+func BenchmarkCombineLoop(b *testing.B) {
 	m := make(map[string]int)
 
 	for v := range FromTo(from, to) {
@@ -346,7 +346,7 @@ func BenchmarkFixedWindow(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkFixedWindow_For(b *testing.B) {
+func BenchmarkFixedWindowLoop(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 	windowLen := 4
 
@@ -391,7 +391,7 @@ func BenchmarkSlidingWindow(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkSlidingWindow_For(b *testing.B) {
+func BenchmarkSlidingWindowLoop(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 	windowLen := 4
 
@@ -440,7 +440,7 @@ func BenchmarkZip(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkZip_For(b *testing.B) {
+func BenchmarkZipLoop(b *testing.B) {
 	slice1 := slices.Collect(FromTo(from, to))
 
 	slice2 := make([]string, 0, breakAt-from)
@@ -484,7 +484,7 @@ func BenchmarkMap(b *testing.B) {
 	}
 }
 
-func BenchmarkMap_For(b *testing.B) {
+func BenchmarkMapLoop(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 
 	for b.Loop() {
@@ -518,7 +518,7 @@ func BenchmarkReduce(b *testing.B) {
 	}
 }
 
-func BenchmarkReduce_For(b *testing.B) {
+func BenchmarkReduceLoop(b *testing.B) {
 	slice := slices.Collect(FromTo(from, to))
 
 	for b.Loop() {
@@ -564,7 +564,7 @@ func BenchmarkUnique(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkUnique_For(b *testing.B) {
+func BenchmarkUniqueLoop(b *testing.B) {
 	tmp := FromTo(from, to)
 
 	slice := make([]int, 0, (breakAt-from)*5)
@@ -631,7 +631,7 @@ func BenchmarkComplexIterators(b *testing.B) {
 }
 
 //nolint:gocognit
-func BenchmarkComplexIteration_For(b *testing.B) {
+func BenchmarkComplexIterationLoop(b *testing.B) {
 	numbers := make([]int, 0, 1000)
 	letters := make([]string, 0, 1000)
 
@@ -741,7 +741,7 @@ func BenchmarkComplexIteratorsAndWorkload(b *testing.B) {
 }
 
 //nolint:gocognit,funlen
-func BenchmarkComplexIteratorsAndWorkload_For(b *testing.B) {
+func BenchmarkComplexIteratorsAndWorkloadLoop(b *testing.B) {
 	numbers := make([]int, 0, 1000)
 	letters := make([]string, 0, 1000)
 
